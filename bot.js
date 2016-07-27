@@ -26,12 +26,12 @@ const botResponses = {
   inviteMe: ' and wants to be invited to your group!',
   nobodyPlaying: 'Sorry! Nobody has indicated they are willing to join a group right now. :( ',
   signup: 'You can be the first though! Head over to the100.io and set your status so others know you want to group up!'
-}
+};
 
 const botHelp = {
   things: 'Here are the things you can do with this bot: \n',
   playingNow: '\n $playingnow will show you everyone who wants to group up from the100.io. If nobody shows up, be sure to set your status on the site.'
-}
+};
 
 bot.on('ready', () => {
 	console.log(`Ready to begin! Serving in ${bot.channels.length} channels`);
@@ -69,7 +69,7 @@ bot.on('message', msg => {
               bot.reply(msg, userGamerInfo.gamertag + botResponses.isPlaying +
               botResponses.inviteMe);
             }
-          })
+          });
         }
         else {
           bot.reply(msg, botResponses.nobodyPlaying + botResponses.signup);
@@ -96,11 +96,10 @@ bot.on('message', msg => {
     const getUserStatus = (error, response, body) => {
       if (!error && response.statusCode == 200) {
         const usersJson = JSON.parse(body);
-        const users = usersJson.filter(gamer => {
-          return gamer.gamertag == userName;
-        })
-        console.log(users);
-        //console.log(requestedUser);
+        const requestedUser = usersJson.filter(gamer => {
+          return gamer.gamertag == 'Wannahotchic';
+        });
+        console.log(requestedUser[0], requestedUser[0].gamertag, requestedUser[0].activity_score);
       }
       else {
         console.log("Sorry there was an error!");
