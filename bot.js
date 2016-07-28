@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const request = require('request');
+//const moment = require('moment');
 
 const bot = new Discord.Client();
 
@@ -9,6 +10,8 @@ const botChannel = '206052775061094401';
 const genChannel = '193349994617634816';
 const the100StatusUrl = 'http://the100.io/api/v1/groups/3140/statuses';
 const the100UserUrl = 'https://www.the100.io/api/v1/groups/3140/users/';
+const the100GamesUrl = 'https://www.the100.io/api/v1/groups/3140/gaming_sessions';
+const gameUrl = 'https://www.the100.io/game/';
 const statusAuthOptions = {
   url: the100StatusUrl,
   headers: {
@@ -30,7 +33,20 @@ const botResponses = {
 
 const botHelp = {
   things: 'Here are the things you can do with this bot: \n',
-  playingNow: '\n $playingnow will show you everyone who wants to group up from the100.io. If nobody shows up, be sure to set your status on the site.'
+  playingNow: '\n $playingnow will show you everyone who wants to group up from the100.io. If nobody shows up, be sure to set your status on the site.',
+  games: '\n $games will display a list of games that are going on today along with a little information'
+};
+
+const todaysDate = () => {
+  const date = new Date();
+  const day = date.getDate();
+  const getMonth = () => {
+    const month = date.getMonth()+1;
+    return month < 10 ? '0' + month : '' + month;
+  };
+  const month = date.getMonth()+1 < 10 ? '0' + month : '' + month;
+  const year = date.getFullYear();
+  return year + '-' + getMonth() + '-' + day;
 };
 
 bot.on('ready', () => {
@@ -82,7 +98,7 @@ bot.on('message', msg => {
   //bothelp
   else if(msg.content.startsWith(prefix + 'bothelp')) {
     console.log(msg.content, " message was used");
-    bot.reply(msg, botHelp.things + botHelp.playingNow);
+    bot.reply(msg, botHelp.things + botHelp.playingNow + botHelp.games);
   }
 
   else if (msg.content.startsWith(prefix + 'my100status')) {
@@ -107,6 +123,38 @@ bot.on('message', msg => {
     };
     request(userAuthOptions, getUserStatus);
   }
+
+  else if (msg.content.startsWith(prefix + 'games')) {
+    const gamesAuthOptions = {
+      url: the100GamesUrl,
+      headers: {
+        'Authorization': the100token.the100token
+      }
+    };
+    const getGames = (error, response, body) => {
+      if (!error && response.statusCode == 200) {
+        const gamesJson = JSON.parse(body);
+        const today = todaysDate();
+        const games = gamesJson.filter(game => {
+          const gameTime = game.start_date.split('T').shift();
+          return gameTime === today;
+        });
+        games.forEach(game => {
+          const gameTime = game.start_date.split('T').shift();
+          bot.sendMessage(msg.channel, '```Game Creator: ' + game.creator_gamertag +
+          '\nGame Type: ' + game.category +
+          '\nDate: ' + gameTime +
+          '\nThere are currently ' + ((game.team_size)-(game.primary_users_count)) + ' spots available' + ' ```' +
+          'Game Url: ' + '<' + gameUrl+game.id + '>' + '\n\n');
+        });
+        //bot.reply(msg, 'There are ' + numberOfGames + ' scheduled right now. Here you go:\n');
+      }
+      else {
+        console.log("Sorry there was an error!");
+      }
+    };
+    request(gamesAuthOptions, getGames);
+  }
   //shutdown
   else if (msg.content.startsWith(adminPrefix + 'shutdown')) {
     console.log(msg.content, " message was used");
@@ -115,5 +163,6 @@ bot.on('message', msg => {
   }
 
 });
+
 
 bot.loginWithToken(AuthDetails.token);
