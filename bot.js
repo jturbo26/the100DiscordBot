@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const request = require('request');
 const moment = require('moment');
 
-const bot = new Discord.Client();
+const bot = new Discord.Client({autoReconnect: true});
 
 const AuthDetails = require('./auth.json');
 const the100token = require('./auth.json');
