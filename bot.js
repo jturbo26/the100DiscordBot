@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const request = require('request');
-//const moment = require('moment');
+const moment = require('moment');
 
 const bot = new Discord.Client();
 
@@ -136,11 +136,13 @@ bot.on('message', msg => {
         const gamesJson = JSON.parse(body);
         const today = todaysDate();
         const games = gamesJson.filter(game => {
-          const gameTime = game.start_date.split('T').shift();
+          const gameTime = game.start_time.split('T').shift();
           return gameTime === today;
         });
         games.forEach(game => {
-          const gameTime = game.start_date.split('T').shift();
+          //const momentTime = moment(game.start_date, 'YYYY-MM-DD hh:mm:ss a');
+          //bot.sendMessage(msg.channel, momentTime);
+          const gameTime = game.start_time.split('T').shift();
           bot.sendMessage(msg.channel, '```Game Creator: ' + game.creator_gamertag +
           '\nGame Type: ' + game.category +
           '\nDate: ' + gameTime +
