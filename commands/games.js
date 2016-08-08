@@ -1,4 +1,5 @@
 const request = require('request');
+const moment = require('moment');
 
 const authDetails = require('../auth.json');
 const the100GamesUrl = 'https://www.the100.io/api/v1/groups/3140/gaming_sessions';
@@ -15,7 +16,7 @@ const todaysDate = () => {
   const getDay = () => {
     const day = date.getDate();
     return day < 10 ? '0' + day : '' + day;
-  }
+  };
   const getMonth = () => {
     const month = date.getMonth()+1;
     return month < 10 ? '0' + month : '' + month;
@@ -31,14 +32,18 @@ const games = (msg, bot) => {
       const gamesJson = JSON.parse(body);
       const today = todaysDate();
       const games = gamesJson.filter(game => {
-        const gameTime = game.start_time.split('T').shift();
-        return gameTime === today;
+        const gameDate = game.start_time.split('T').shift();
+        return gameDate === today;
       });
       games.forEach(game => {
-        const gameTime = game.start_time.split('T').shift();
+        const gameDate = game.start_time.split('T').shift();
+        const gameTime24 = game.start_time.split('T').pop().split('.').shift();
+        const gameTime12 = moment(gameTime24);
+        const momentFinalTime = gameTime12.format('hh:mm:ss');
         bot.sendMessage(msg.channel, '```Game Creator: ' + game.creator_gamertag +
         '\nGame Type: ' + game.category +
-        '\nDate: ' + gameTime +
+        '\nDate: ' + gameDate +
+        '\nTime: ' + gameTime24 + ' Pacific' +
         '\nThere are currently ' + ((game.team_size)-(game.primary_users_count)) + ' spots available' + ' ```' +
         'Game Url: ' + '<' + gameUrl+game.id + '>' + '\n\n');
       });
@@ -48,6 +53,6 @@ const games = (msg, bot) => {
     }
   };
   request(gamesAuthOptions, getGames);
-}
+};
 
 module.exports = games;
