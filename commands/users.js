@@ -16,7 +16,7 @@ const userStatus = (msg, bot) => {
     if (!error && response.statusCode == 200) {
       const usersJson = JSON.parse(body);
       const requestedUser = usersJson.filter(gamer => {
-        return gamer.gamertag == userName;
+        return gamer.gamertag.toLowerCase() == lcUserName;
       });
       const gamer = requestedUser[0];
       if(gamer === undefined) {
