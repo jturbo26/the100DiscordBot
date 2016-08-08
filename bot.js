@@ -5,6 +5,7 @@ const moment = require('moment');
 const playingNow = require('./commands/playingnow.js');
 const games = require('./commands/games.js');
 const botHelp = require('./commands/bothelp.js');
+const userStatus= require('./commands/users.js');
 
 const authDetails = require('./auth.json');
 const botChannel = '206052775061094401';
