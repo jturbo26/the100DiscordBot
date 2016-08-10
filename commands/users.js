@@ -12,6 +12,7 @@ const userStatus = (msg, bot) => {
       'Authorization': authDetails.the100token
     }
   };
+  console.log('inside command component users.js');
   const getUserStatus = (error, response, body) => {
     if (!error && response.statusCode == 200) {
       const usersJson = JSON.parse(body);

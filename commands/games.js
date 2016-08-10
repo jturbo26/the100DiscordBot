@@ -12,16 +12,17 @@ const gamesAuthOptions = {
 };
 
 const todaysDate = () => {
-  const date = new Date();
+  var date = moment(new Date(), 'YYYY-MM-DD');
+
   const getDay = () => {
-    const day = date.getDate();
+    const day = moment().get('date');
     return day < 10 ? '0' + day : '' + day;
   };
   const getMonth = () => {
-    const month = date.getMonth()+1;
+    const month = moment().get('month')+1;
     return month < 10 ? '0' + month : '' + month;
   };
-  const year = date.getFullYear();
+  const year = moment().get('year');
   return year + '-' + getMonth() + '-' + getDay();
 };
 
@@ -37,15 +38,14 @@ const games = (msg, bot) => {
       });
       games.forEach(game => {
         const gameDate = game.start_time.split('T').shift();
-        const gameTime24 = game.start_time.split('T').pop().split('.').shift();
-        const gameTime12 = moment(gameTime24);
-        const momentFinalTime = gameTime12.format('hh:mm:ss');
+        const gameTime = moment(game.start_time.split('T').pop().split('.').shift(), 'HH:mm:ss').format('h:mm A');
         bot.sendMessage(msg.channel, '```Game Creator: ' + game.creator_gamertag +
         '\nGame Type: ' + game.category +
         '\nDate: ' + gameDate +
-        '\nTime: ' + gameTime24 + ' Pacific' +
+        '\nTime: ' + gameTime + ' Pacific' +
         '\nThere are currently ' + ((game.team_size)-(game.primary_users_count)) + ' spots available' + ' ```' +
-        'Game Url: ' + '<' + gameUrl+game.id + '>' + '\n\n');
+        'Game Url: ' + '<' + gameUrl+game.id + '>' +
+        '\nFor help converting to your local time: <http://www.worldtimebuddy.com/>' + '\n\n');
       });
     }
     else {
