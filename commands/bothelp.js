@@ -8,6 +8,6 @@ const botHelpResponses = {
 const botHelp = (msg, bot) => {
   console.log('$botHelp was used');
   bot.reply(msg, botHelpResponses.things + botHelpResponses.the100status + botHelpResponses.playingNow + botHelpResponses.games);
-}
+};
 
 module.exports = botHelp;

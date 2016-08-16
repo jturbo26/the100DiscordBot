@@ -45,6 +45,6 @@ const playingNow = (msg, bot) => {
     }
   };
   request(statusAuthOptions, getGroupStatuses);
-}
+};
 
 module.exports = playingNow;

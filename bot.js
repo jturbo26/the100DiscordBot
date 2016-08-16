@@ -19,7 +19,7 @@ const bot = new Discord.Client({autoReconnect: true});
 bot.on('ready', () => {
 	console.log(`Ready to begin! Serving in ${bot.channels.length} channels`);
   bot.sendMessage(botChannel, 'The100bot is online and ready to go!');
-  bot.setStatus('available', '$botHelp');
+  bot.setStatus('active', '$botHelp');
 });
 
 bot.on('serverNewMember', (server, user) => {
@@ -57,7 +57,7 @@ bot.on('message', msg => {
 	  //shutdown
 	  else if (msg.content.startsWith(adminPrefix + 'shutdown')) {
 	    console.log(msg.content, " message was used");
-			bot.sendMessage(botChannel, "Bot shutting down... Bye")
+			bot.sendMessage(botChannel, "Bot shutting down... Bye");
 	    bot.setStatus('away', 'In Dev');
 	  }
 

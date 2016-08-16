@@ -12,7 +12,7 @@ const userStatus = (msg, bot) => {
       'Authorization': authDetails.the100token
     }
   };
-  console.log('inside command component users.js');
+
   const getUserStatus = (error, response, body) => {
     if (!error && response.statusCode == 200) {
       const usersJson = JSON.parse(body);
@@ -21,7 +21,7 @@ const userStatus = (msg, bot) => {
       });
       const gamer = requestedUser[0];
       if(gamer === undefined) {
-        bot.reply(msg, 'Sorry, no user was found by that name. Please try again with a different username.')
+        bot.reply(msg, 'Sorry, no user was found by that name. Please try again with a different username.');
       }
       else {
         bot.reply(msg, gamer.gamertag + ' has ' +
@@ -33,6 +33,6 @@ const userStatus = (msg, bot) => {
     }
   };
   request(userAuthOptions, getUserStatus);
-}
+};
 
 module.exports = userStatus;
