@@ -36,17 +36,24 @@ const games = (msg, bot) => {
         const gameDate = game.start_time.split('T').shift();
         return gameDate === today;
       });
-      games.forEach(game => {
-        const gameDate = game.start_time.split('T').shift();
-        const gameTime = moment(game.start_time.split('T').pop().split('.').shift(), 'HH:mm:ss').format('h:mm A');
-        bot.sendMessage(msg.channel, '```Game Creator: ' + game.creator_gamertag +
-        '\nGame Type: ' + game.category +
-        '\nDate: ' + gameDate +
-        '\nTime: ' + gameTime + ' Pacific' +
-        '\nThere are currently ' + ((game.team_size)-(game.primary_users_count)) + ' spots available' + ' ```' +
-        'Game Url: ' + '<' + gameUrl+game.id + '>' +
-        '\nFor help converting to your local time: <http://www.worldtimebuddy.com/>' + '\n\n');
-      });
+      if(games.length != 0) {
+        games.forEach(game => {
+          const gameDate = game.start_time.split('T').shift();
+          const gameTime = moment(game.start_time.split('T').pop().split('.').shift(), 'HH:mm:ss').format('h:mm A');
+          bot.sendMessage(msg.channel, '**Game Creator:** ' + game.creator_gamertag +
+          '\n**Game Type:** ' + game.category +
+          '\n**Date:** ' + gameDate +
+          '\n**Time:** ' + gameTime + ' Pacific' +
+          '\n**Description:** ' + game.name +
+          '\n' +
+          '\nThere are currently ' + '**' +((game.team_size)-(game.primary_users_count)) + '**' + ' spots available' + ' ' +
+          'Game Url: ' + '<' + gameUrl+game.id + '>' +
+          '\nFor help converting to your local time: <http://www.worldtimebuddy.com/>' + '\n\n');
+        });
+      }
+      else {
+        bot.sendMessage(msg.channel, "There are currently no games scheduled, but since you asked, that means you want to play. Go make one!! ***It's a perfect day for some mayhem!***");
+      }
     }
     else {
       console.log("Sorry there was an error!");
