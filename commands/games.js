@@ -40,7 +40,7 @@ const games = (msg, bot) => {
         games.forEach(game => {
           const gameDate = game.start_time.split('T').shift();
           const gameTime = moment(game.start_time.split('T').pop().split('.').shift(), 'HH:mm:ss').format('h:mm A');
-          bot.sendMessage(msg.channel, '**Game Creator:** ' + game.creator_gamertag +
+          msg.channel.sendMessage('**Game Creator:** ' + game.creator_gamertag +
           '\n**Game Type:** ' + game.category +
           '\n**Date:** ' + gameDate +
           '\n**Time:** ' + gameTime + ' Pacific' +
@@ -52,7 +52,7 @@ const games = (msg, bot) => {
         });
       }
       else {
-        bot.sendMessage(msg.channel, "There are currently no games scheduled, but since you asked, that means you want to play. Go make one!! ***It's a perfect day for some mayhem!***");
+        msg.channel.sendMessage("There are currently no games scheduled, but since you asked, that means you want to play. Go make one!! ***It's a perfect day for some mayhem!***");
       }
     }
     else {

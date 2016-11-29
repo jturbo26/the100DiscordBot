@@ -18,7 +18,7 @@ const botResponses = {
   signup: 'You can be the first though! Head over to the100.io and set your status so others know you want to group up!'
 };
 
-const playingNow = (msg, bot) => {
+const playingNow = msg=> {
   console.log(msg.content, " message was used");
   const getGroupStatuses = (error, response, body) => {
     if (!error && response.statusCode == 200) {
@@ -26,21 +26,21 @@ const playingNow = (msg, bot) => {
       if(info.length > 0) {
         info.forEach(userGamerInfo => {
           if(userGamerInfo.category === '#willsherpa') {
-            bot.reply(msg, userGamerInfo.gamertag + botResponses.isPlaying +
+            msg.reply(userGamerInfo.gamertag + botResponses.isPlaying +
             botResponses.willSherpa);
           }
           else if(userGamerInfo.category === '#joinme') {
-            bot.reply(msg, userGamerInfo.gamertag + botResponses.isPlaying +
+            msg.reply(userGamerInfo.gamertag + botResponses.isPlaying +
             botResponses.joinMe);
           }
           else {
-            bot.reply(msg, userGamerInfo.gamertag + botResponses.isPlaying +
+            msg.reply(userGamerInfo.gamertag + botResponses.isPlaying +
             botResponses.inviteMe);
           }
         });
       }
       else {
-        bot.reply(msg, botResponses.nobodyPlaying + botResponses.signup);
+        msg.reply(botResponses.nobodyPlaying + botResponses.signup);
       }
     }
   };
