@@ -26,7 +26,7 @@ const todaysDate = () => {
   return year + '-' + getMonth() + '-' + getDay();
 };
 
-const games = (msg, bot) => {
+const games = msg => {
   console.log('$games was called');
   const getGames = (error, response, body) => {
     if (!error && response.statusCode == 200) {

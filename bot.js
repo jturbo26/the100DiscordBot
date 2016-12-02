@@ -8,8 +8,6 @@ const botHelp = require('./commands/bothelp.js');
 const userStatus= require('./commands/users.js');
 
 const authDetails = require('./auth.json');
-const botChannel = '206052775061094401';
-const genChannel = '193349994617634816';
 
 const prefix = '$';
 const adminPrefix = '*';
@@ -17,48 +15,49 @@ const adminPrefix = '*';
 const bot = new Discord.Client({autoReconnect: true});
 
 bot.on('ready', () => {
-	console.log(`Ready to begin! Serving in ${bot.channels.length} channels`);
-  //bot.sendMessage(botChannel, 'The100bot is online and ready to go!');
-  //bot.setStatus('active', '$botHelp');
-	console.log(bot);
+	console.log(`Bot online`);
+	const botTestChannel = bot.channels.find('name', 'bottestchannel');
+	botTestChannel.sendMessage('Bot is online and ready to go!');
 });
 
-bot.on('guildMemberAdd', (guild, member) => {
-  console.log("new member=", member.user.username, 'guild= ', guild, 'msg=', msg);
-
+bot.on('guildMemberAdd', (guildMember) => {
+	const generalChannel = guildMember.guild.channels.find('name', 'general');
+	const coreChannel = guildMember.guild.channels.find('name', 'core_member_chat');
+	generalChannel.sendMessage('Hey '+ guildMember.user + '!! Great to have you! A few things you should do now:\n' +
+		'```1. Please be sure your Discord nickname match your Battlenet id, including the #1234 at the end.\n' +
+		'2. Head over to #introductions and inroduce yourself. Who are you? What games do you play? Who\'s your fav OW Hero?\n' +
+		'3. Stop by the #use_enslaved_omnics_here channel to see if we have any games scheduled using the command $games\n' +
+		'4. Sign up for some games on the100.io or start a PUG with people here in Discord\n' +
+		'5. Follow the #rules, and enjoy our little gaming community!```\n' +
+		'If you have any questions, reach out to an @moderator or @CC337_Core_Member and we\'re happy to help!'
+	);
+	coreChannel.sendMessage('Hey Core Members! We have a new member. Please be sure to welcome them and encourage them to participate!\n' +
+		'\nNew Member= ' + guildMember.user
+		);
 });
 
 bot.on('message', msg => {
 
 	if(msg.content.startsWith('$') || msg.content.startsWith('*')) {
 		//$playingnow
-	  if(msg.content.startsWith(prefix + 'playingnow')) {
-	    playingNow(msg);
-	  }
+		if(msg.content.startsWith(prefix + 'playingnow')) {
+			playingNow(msg);
+		}
 
 		//$games
-	  else if (msg.content.startsWith(prefix + 'games')) {
-	    games(msg);
-	  }
+		else if (msg.content.startsWith(prefix + 'games')) {
+			games(msg);
+		}
 
-	  //$bothelp
-	  else if(msg.content.startsWith(prefix + 'bothelp')) {
-	    botHelp(msg);
-	  }
+		//$bothelp
+		else if(msg.content.startsWith(prefix + 'bothelp')) {
+			botHelp(msg);
+		}
 
 		//$my100status
-	  else if (msg.content.startsWith(prefix + 'my100status')) {
-	  	userStatus(msg);
-	  }
-
-	  //shutdown
-	  else if (msg.content.startsWith(adminPrefix + 'shutdown')) {
-	    console.log(msg.content, " message was used");
-			msg.channel.sendMessage("Bot shutting down... Bye");
-	    bot.setStatus('away');
-			bot.setGame('InDev');
-			bot.destroy;
-	  }
+		else if (msg.content.startsWith(prefix + 'my100status')) {
+			userStatus(msg);
+		}
 
 		else if (msg.content.startsWith(adminPrefix + 'bottest')) {
 			msg.channel.sendMessage('Test message!');
