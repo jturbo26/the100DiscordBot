@@ -3,7 +3,7 @@ const request = require('request');
 const authDetails = require('../auth.json');
 const the100UserUrl = 'https://www.the100.io/api/v1/groups/3140/users?page=all';
 
-const userStatus = (msg, bot) => {
+const userStatus = msg => {
   const userName = msg.content.split(' ').pop();
   const lcUserName = userName.toLowerCase();
   const userAuthOptions = {
@@ -21,10 +21,10 @@ const userStatus = (msg, bot) => {
       });
       const gamer = requestedUser[0];
       if(gamer === undefined) {
-        bot.reply(msg, 'Sorry, no user was found by that name. Please try again with a different username.');
+        msg.reply(msg, 'Sorry, no user was found by that name. Please try again with a different username.');
       }
       else {
-        bot.reply(msg, gamer.gamertag + ' has ' +
+        msg.reply(msg, gamer.gamertag + ' has ' +
         gamer.activity_score + ' activity points and ' + gamer.karmas_count + ' karma on the site!');
       }
     }
