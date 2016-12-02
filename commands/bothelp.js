@@ -5,9 +5,9 @@ const botHelpResponses = {
   games: '\n $games will display a list of games that are going on today along with a little information'
 };
 
-const botHelp = (msg, bot) => {
+const botHelp = msg => {
   console.log('$botHelp was used');
-  bot.reply(msg, botHelpResponses.things + botHelpResponses.the100status + botHelpResponses.playingNow + botHelpResponses.games);
+  msg.reply(botHelpResponses.things + botHelpResponses.the100status + botHelpResponses.playingNow + botHelpResponses.games);
 };
 
 module.exports = botHelp;
