@@ -48,7 +48,8 @@ const games = msg => {
           '\n' +
           '\nThere are currently ' + '**' +((game.team_size)-(game.primary_users_count)) + '**' + ' spots available' + ' ' +
           'Game Url: ' + '<' + gameUrl+game.id + '>' +
-          '\nFor help converting to your local time: <http://www.worldtimebuddy.com/>' + '\n\n');
+          '\nFor help converting to your local time: <http://www.worldtimebuddy.com/>' +
+          '\n================================================');
         });
       }
       else {
