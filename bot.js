@@ -18,6 +18,7 @@ bot.on('ready', () => {
 	console.log(`Bot online`);
 	const botTestChannel = bot.channels.find('name', 'bottestchannel');
 	botTestChannel.sendMessage('Bot is online and ready to go!');
+	bot.user.setGame('$bothelp');
 });
 
 bot.on('guildMemberAdd', (guildMember) => {
