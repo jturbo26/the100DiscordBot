@@ -50,8 +50,12 @@ bot.on('message', msg => {
 			games(msg);
 		}
 
-		else if (msg.content.startsWith(prefix + 'stats')) {
-			stats(msg);
+		else if (
+			msg.content.startsWith(prefix + 'stats') ||
+			msg.content.startsWith(prefix + 'compstats') ||
+			msg.content.startsWith(prefix + 'avgstats')
+		) {
+				stats(msg);
 		}
 
 		//$bothelp
