@@ -5,7 +5,8 @@ const moment = require('moment');
 const playingNow = require('./commands/playingnow.js');
 const games = require('./commands/games.js');
 const botHelp = require('./commands/bothelp.js');
-const userStatus= require('./commands/users.js');
+const userStatus = require('./commands/users.js');
+const stats = require('./commands/stats.js');
 
 const authDetails = require('./auth.json');
 
@@ -48,6 +49,10 @@ bot.on('message', msg => {
 		//$games
 		else if (msg.content.startsWith(prefix + 'games')) {
 			games(msg);
+		}
+
+		else if (msg.content.startsWith(prefix + 'stats')) {
+			stats(msg);
 		}
 
 		//$bothelp
