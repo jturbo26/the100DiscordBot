@@ -16,9 +16,10 @@ const adminPrefix = '*';
 const bot = new Discord.Client({autoReconnect: true});
 
 bot.on('ready', () => {
-	console.log(`Bot online`);
 	const botTestChannel = bot.channels.find('name', 'bottestchannel');
 	botTestChannel.sendMessage('Bot is online and ready to go!');
+	console.log(`Bot Online`);
+	bot.user.setGame('$bothelp');
 });
 
 bot.on('guildMemberAdd', (guildMember) => {
@@ -68,10 +69,18 @@ bot.on('message', msg => {
 			userStatus(msg);
 		}
 
-		else if (msg.content.startsWith(adminPrefix + 'bottest')) {
-			msg.channel.sendMessage('Test message!');
+		else if (msg.content.startsWith(adminPrefix + 'shutdown')) {
+			const botTestChannel = bot.channels.find('name', 'bottestchannel');
+			bot.user.setGame('Offline');
+			botTestChannel.sendMessage('Shutting Down');
+			bot.destroy();
 		}
 	}
+});
+
+bot.on('disconnect', msg => {
+	const botTestChannel = bot.channels.find('name', 'use_enslaved_omnics_here');
+	botTestChannel.sendMessage('Bot Disconnected');
 });
 
 bot.on('error', e => { console.error(e); });

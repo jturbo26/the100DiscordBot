@@ -31,44 +31,53 @@ const stats = msg => {
 		}
 	}
 
-	const getUserStats = (error, response, body) => {
-		const bodyContent = JSON.parse(body);
-		const quickplayData = bodyContent.us.stats.quickplay;
-		const competitiveData = bodyContent.us.stats.competitive;
-		const emptyObjectChecker = Object.getOwnPropertyNames(quickplayData);
-		if (emptyObjectChecker.length === 0) {
-			msg.reply("Sorry. This user doesn't have any data.");
+	const getUserStats = (error, response, parsedBody) => {
+		const quickplayData = parsedBody.us.stats.quickplay;
+		const competitiveData = parsedBody.us.stats.competitive;
+		const emptyObjectQpChecker = Object.getOwnPropertyNames(quickplayData);
+		const emptyObjectCompChecker = Object.getOwnPropertyNames(competitiveData);
+		if (emptyObjectQpChecker.length === 0 || emptyObjectCompChecker.length === 0) {
+			msg.reply("Sorry. This user has missing data. Boo boo doo de doo.");
 			return;
 		}
 		msg.reply("```Markdown" +
 			"\n#Here are basic stats for " + msgStatsContent +
-			"\nLevel: "  + quickplayData.overall_stats.prestige + quickplayData.overall_stats.level +
+			"\nLevel: "  + (quickplayData.overall_stats.prestige !== 0 ? quickplayData.overall_stats.prestige : '') + quickplayData.overall_stats.level +
 			"\nCompRank: " + (competitiveData.overall_stats.comprank !== null ? competitiveData.overall_stats.comprank : "Not Ranked") + "```");
 	}
 
-	const getCompUserStats = (error, response, body) => {
-		const bodyContent = JSON.parse(body);
-		const competitiveData = bodyContent.us.stats.competitive;
+	const getCompUserStats = (error, response, parsedBody) => {
+		const competitiveData = parsedBody.us.stats.competitive;
+		const emptyObjectCompChecker = Object.getOwnPropertyNames(competitiveData);
+		if (emptyObjectCompChecker.length === 0 || emptyObjectCompChecker.length === 0) {
+			msg.reply("Sorry. This user has missing data. Boo boo doo de doo.");
+			return;
+		}
 		msg.reply("```Markdown" +
 			"\n#Here are competitive stats for " + msgCompStatsContent +
 			" (CompRank: " + (competitiveData.overall_stats.comprank !== null ? competitiveData.overall_stats.comprank : "Not Ranked") + ")" +
 			"\nAverage Deaths: " + competitiveData.average_stats.deaths_avg + "```");
 	}
 
-	const getAvgUserStats = (error, response, body) => {
-		const bodyContent = JSON.parse(body);
-		const competitiveData = bodyContent.us.stats.competitive;
-		msg.reply("```Markdown" +
-			"\n#This command is not ready yet. Still in development.");
-	}
+	// Putting a hold on this one for now. - Turbo
+	// const getAvgUserStats = (error, response, body) => {
+	// 	const bodyContent = JSON.parse(body);
+	// 	const competitiveData = bodyContent.us.stats.competitive;
+	// 	msg.reply("```Markdown" +
+	// 		"\n#This command is not ready yet. Still in development.");
+	// }
 
 	//Check the JSON to ensure the user exists. If the first
 	//character of the body is '{' then the user doesn't exist.
 	//Then use the function that was passed in below to display
 	//the users data in discord.
 	lookupCorrectFn = fn => (error, response, body) => {
-		if (body[0] === '{') {
-			fn(error, response, body)
+		const parsedBody = JSON.parse(body);
+		if (parsedBody.error !== 404) {
+			fn(error, response, parsedBody)
+		}
+		else {
+			msg.reply("Bweeeeeeeeeeeoh. There was an error finding that user. Usernames are case sensitive. Try again.");
 		}
 	}
 

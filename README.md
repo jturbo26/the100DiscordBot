@@ -1,4 +1,7 @@
 # the100DiscordBot
-My attempt at a discord bot for our group on the100.io using discord.js.
+## To run the bot:
+* Create a new file called auth.json in the100DiscordBot directory
+* Place valid JSON with tokens in new file (Reach out to Turbo if you need these)
 
-9/8 Test push
+* Make sure you have node 6.0.0 or higher and npm installed on your machine
+* Run the bot by typing the following without quotes "node bot.js"
