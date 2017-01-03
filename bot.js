@@ -35,7 +35,7 @@ bot.on('guildMemberAdd', (guildMember) => {
 	);
 	coreChannel.sendMessage('Hey Core Members! We have a new member. Please be sure to welcome them and encourage them to participate!\n' +
 		'\nNew Member= ' + guildMember.user
-		);
+	);
 });
 
 bot.on('message', msg => {
