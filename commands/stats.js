@@ -53,6 +53,7 @@ const stats = msg => {
 			msg.reply("Sorry. This user has missing data. Boo boo doo de doo.");
 			return;
 		}
+		// Sucrizzle - Playing with Git commits
 		msg.reply("```Markdown" +
 			"\n#Here are competitive stats for " + msgCompStatsContent +
 			" (CompRank: " + (competitiveData.overall_stats.comprank !== null
