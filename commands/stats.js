@@ -43,7 +43,7 @@ const stats = msg => {
 		msg.reply("```Markdown" +
 			"\n#Here are basic stats for " + msgStatsContent +
 			"\nLevel: "  + (quickplayData.overall_stats.prestige !== 0 ? quickplayData.overall_stats.prestige : '') + quickplayData.overall_stats.level +
-			"\nCompRank: " + (competitiveData.overall_stats.comprank !== null ? competitiveData.overall_stats.comprank : "Not Ranked") + "```");
+			"\nComp Rank: " + (competitiveData.overall_stats.comprank !== null ? competitiveData.overall_stats.comprank : "Not Ranked") + "```");
 	}
 
 	const getCompUserStats = (error, response, parsedBody) => {
@@ -55,8 +55,15 @@ const stats = msg => {
 		}
 		msg.reply("```Markdown" +
 			"\n#Here are competitive stats for " + msgCompStatsContent +
-			" (CompRank: " + (competitiveData.overall_stats.comprank !== null ? competitiveData.overall_stats.comprank : "Not Ranked") + ")" +
-			"\nAverage Deaths: " + competitiveData.average_stats.deaths_avg + "```");
+			" (CompRank: " + (competitiveData.overall_stats.comprank !== null
+				? (competitiveData.overall_stats.comprank +
+					" | Current Tier: " + competitiveData.overall_stats.tier.charAt(0).toUpperCase() + competitiveData.overall_stats.tier.slice(1) +
+					" | Time Played: " + competitiveData.game_stats.time_played + " hours"
+				  )
+				: "Not Ranked") + ")" +
+			"\nComp Record: " + (competitiveData.overall_stats.wins) + "-" + (competitiveData.overall_stats.losses) + '-' + (competitiveData.overall_stats.ties) +
+			" (" + (competitiveData.overall_stats.win_rate) + "% Win Rate)" + "```");
+			//"\nAverage Deaths: " + competitiveData.average_stats.deaths_avg + "```");
 	}
 
 	// Putting a hold on this one for now. - Turbo
