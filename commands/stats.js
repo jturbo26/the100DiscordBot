@@ -78,7 +78,7 @@ const stats = msg => {
 			// Need to work on this one to catch if the user only has 1 killing blow and return 1 instead of No Data. <-- Done
 			"\nMelee Final Blows: " + (QPGmStats.melee_final_blows_most_in_game ? QPGmStats.melee_final_blows_most_in_game.toLocaleString() : QPGmStats.melee_final_blow_most_in_game ? QPGmStats.melee_final_blow_most_in_game.toLocaleString() : "No Data") +
 			"\nSolo Kills: " + (QPGmStats.solo_kills_most_in_game ? QPGmStats.solo_kills_most_in_game.toLocaleString() : "No Data") +
-			"\nMultikill Best: " + (QPGmStats.multikill_best ? QPGmStats.multikill_best.toLocaleString() : "No Data") +
+			"\nBest Multikill: " + (QPGmStats.multikill_best ? QPGmStats.multikill_best.toLocaleString() : "No Data") +
 			"\n\nOffensive Assists: " + (QPGmStats.offensive_assists_most_in_game ? QPGmStats.offensive_assists_most_in_game.toLocaleString() : "No Data") +
 			"\nDefensive Assists: " + (QPGmStats.defensive_assists_most_in_game ? QPGmStats.defensive_assists_most_in_game.toLocaleString() : "No Data") +
 			"\n\nTime Spent on Fire in a Single Game: " + (QPGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(QPGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : "No Data") +
@@ -143,7 +143,7 @@ const stats = msg => {
 			// Need to work on this one to catch if the user only has 1 killing blow and return 1 instead of No Data. <-- Done
 			"\nMelee Final Blows: " + (compGmStats.melee_final_blows_most_in_game ? compGmStats.melee_final_blows_most_in_game.toLocaleString() : compGmStats.melee_final_blow_most_in_game ? compGmStats.melee_final_blow_most_in_game.toLocaleString() : "No Data") +
 			"\nSolo Kills: " + (compGmStats.solo_kills_most_in_game ? compGmStats.solo_kills_most_in_game.toLocaleString() : "No Data") +
-			"\nMultikill: " + (compGmStats.multikill_best ? compGmStats.multikill_best.toLocaleString() : "No Data") +
+			"\nBest Multikill: " + (compGmStats.multikill_best ? compGmStats.multikill_best.toLocaleString() : "No Data") +
 			"\n\nOffensive Assists: " + (compGmStats.offensive_assists_most_in_game ? compGmStats.offensive_assists_most_in_game.toLocaleString() : "No Data") +
 			"\nDefensive Assists: " + (compGmStats.defensive_assists_most_in_game ? compGmStats.defensive_assists_most_in_game.toLocaleString() : "No Data") +
 			"\n\nTime Spent on Fire in a Single Game: " + (compGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : "No Data") +
