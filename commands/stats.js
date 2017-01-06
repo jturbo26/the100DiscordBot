@@ -60,7 +60,7 @@ const stats = msg => {
 			"\nEnvironmental Kills: " + (QPGmStats.environmental_kills ? QPGmStats.environmental_kills.toLocaleString() : "No Data") +
 			"\nEnvironmental Deaths: " + (QPGmStats.environmental_deaths ? QPGmStats.environmental_deaths.toLocaleString() : "No Data") +
 			"\nFinal Blows: " + (QPGmStats.final_blows ? QPGmStats.final_blows.toLocaleString() : "No Data") +
-			"\nMelee Final Blows: " + (QPGmStats.melee_final_blows ? QPGmStats.melee_final_blows.toLocaleString() : "No Data") +
+			"\nMelee Final Blows: " + (QPGmStats.melee_final_blows ? QPGmStats.melee_final_blows.toLocaleString() : QPGmStats.melee_final_blow ? QPGmStats.melee_final_blow.toLocaleString() : "No Data") +
 			"\nSolo Kills: " + (QPGmStats.solo_kills ? QPGmStats.solo_kills.toLocaleString() : "No Data") +
 			"\nMultikills: " + (QPGmStats.multikills ? QPGmStats.multikills.toLocaleString() : "No Data") +
 			"\n\nOffensive Assists: " + (QPGmStats.offensive_assists ? QPGmStats.offensive_assists.toLocaleString() : "No Data") +
@@ -75,10 +75,10 @@ const stats = msg => {
 			"\n\nEliminations: " + (QPGmStats.eliminations_most_in_game? QPGmStats.eliminations_most_in_game.toLocaleString() : "No Data") +
 			"\n\nObjective Kills: " + (QPGmStats.objective_kills_most_in_game ? QPGmStats.objective_kills_most_in_game.toLocaleString() : "No Data")+
 			"\nFinal Blows: " + (QPGmStats.final_blows_most_in_game ? QPGmStats.final_blows_most_in_game.toLocaleString() : "No Data" ) +
-			// Need to work on this one to catch if the user only has 1 killing blow and return 1 instead of No Data.
-			"\nMelee Final Blows: " + (QPGmStats.melee_final_blows_most_in_game ? QPGmStats.melee_final_blows_most_in_game.toLocaleString() : "No Data") +
+			// Need to work on this one to catch if the user only has 1 killing blow and return 1 instead of No Data. <-- Done
+			"\nMelee Final Blows: " + (QPGmStats.melee_final_blows_most_in_game ? QPGmStats.melee_final_blows_most_in_game.toLocaleString() : QPGmStats.melee_final_blow_most_in_game ? QPGmStats.melee_final_blow_most_in_game.toLocaleString() : "No Data") +
 			"\nSolo Kills: " + (QPGmStats.solo_kills_most_in_game ? QPGmStats.solo_kills_most_in_game.toLocaleString() : "No Data") +
-			"\nMultikill: " + (QPGmStats.multikill_best ? QPGmStats.multikill_best.toLocaleString() : "No Data") +
+			"\nMultikill Best: " + (QPGmStats.multikill_best ? QPGmStats.multikill_best.toLocaleString() : "No Data") +
 			"\n\nOffensive Assists: " + (QPGmStats.offensive_assists_most_in_game ? QPGmStats.offensive_assists_most_in_game.toLocaleString() : "No Data") +
 			"\nDefensive Assists: " + (QPGmStats.defensive_assists_most_in_game ? QPGmStats.defensive_assists_most_in_game.toLocaleString() : "No Data") +
 			"\n\nTime Spent on Fire in a Single Game: " + (QPGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(QPGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : "No Data") +
@@ -88,22 +88,67 @@ const stats = msg => {
 
 	const getCompUserStats = (error, response, parsedBody) => {
 		const competitiveData = parsedBody.us.stats.competitive;
+		const compGmStats = competitiveData.game_stats;
+		const compOvrStats = competitiveData.overall_stats;
 		const emptyObjectCompChecker = Object.getOwnPropertyNames(competitiveData);
 		if (emptyObjectCompChecker.length === 0 || emptyObjectCompChecker.length === 0) {
 			msg.reply("Sorry. This user has missing data. Boo boo doo de doo.");
 			return;
 		}
-		// Sucrizzle - Playing with Git commits
+
+		// Make sure the user has played some games this comp Season.  Not sure if it would be null or 0 or ???  Taking a guess here
+		if (compOvrStats.games == null || compOvrStats.games == 0) {
+			msg.reply("You need to play some games first.  Bibbity bobbity boo");
+			return;
+		}
+
 		msg.reply("```Markdown" +
+			// Can we find a way to insert player icon?
+			//"\n" + compOvrStats.avatar +
 			"\n#Here are competitive stats for " + msgCompStatsContent +
-			" (CompRank: " + (competitiveData.overall_stats.comprank !== null
-				? (competitiveData.overall_stats.comprank +
-					" | Current Tier: " + competitiveData.overall_stats.tier.charAt(0).toUpperCase() + competitiveData.overall_stats.tier.slice(1) +
-					" | Time Played: " + competitiveData.game_stats.time_played + " hours"
+			" (CompRank: " + (compOvrStats.comprank !== null
+				? (compOvrStats.comprank +
+					" | Current Tier: " + compOvrStats.tier.charAt(0).toUpperCase() + compOvrStats.tier.slice(1) +
+					" | Time Played: " + compGmStats.time_played + " hours"
 				  )
 				: "Not Ranked") + ")" +
-			"\nComp Record: " + (competitiveData.overall_stats.wins) + "-" + (competitiveData.overall_stats.losses) + '-' + (competitiveData.overall_stats.ties) +
-			" (" + (competitiveData.overall_stats.win_rate) + "% Win Rate)" + "```");
+			"\n\n#Current Season Totals" +
+			"\nComp Record: " + (compOvrStats.wins) + "-" + (compOvrStats.losses) + '-' + (compOvrStats.ties) + " (" + (compOvrStats.win_rate) + "% Win Rate)" +
+			"\nMedals: " + compGmStats.medals.toLocaleString() + " (G:" + compGmStats.medals_gold.toLocaleString() + " S:" + compGmStats.medals_silver.toLocaleString() + " B:" + compGmStats.medals_bronze.toLocaleString() + ")" +
+			"\nVoting Cards: " + (compGmStats.cards ? compGmStats.cards.toLocaleString() : "No Data") +
+			"\n\nDamage Done: " + (compGmStats.damage_done ? compGmStats.damage_done.toLocaleString() : "No Data") +
+			"\nHealing Done: " + (compGmStats.healing_done ? compGmStats.healing_done.toLocaleString() : "No Data") +
+			"\n\nEliminations: " + (compGmStats.eliminations ? compGmStats.eliminations.toLocaleString() : "No Data") +
+			"\nDeaths: " + (compGmStats.deaths ? compGmStats.deaths.toLocaleString() : "No Data") +
+			"\nEliminations per Death: " + (compGmStats.kpd ? compGmStats.kpd.toLocaleString() : "No Data") +
+			"\n\nObjective Kills: " + (compGmStats.objective_kills ? compGmStats.objective_kills.toLocaleString() : "No Data") +
+			"\nEnvironmental Kills: " + (compGmStats.environmental_kills ? compGmStats.environmental_kills.toLocaleString() : "No Data") +
+			"\nEnvironmental Deaths: " + (compGmStats.environmental_deaths ? compGmStats.environmental_deaths.toLocaleString() : "No Data") +
+			"\nFinal Blows: " + (compGmStats.final_blows ? compGmStats.final_blows.toLocaleString() : "No Data") +
+			"\nMelee Final Blows: " + (compGmStats.melee_final_blows ? compGmStats.melee_final_blows.toLocaleString() : compGmStats.melee_final_blow ? compGmStats.melee_final_blow.toLocaleString() : "No Data") +
+			"\nSolo Kills: " + (compGmStats.solo_kills ? compGmStats.solo_kills.toLocaleString() : "No Data") +
+			"\nMultikills: " + (compGmStats.multikills ? compGmStats.multikills.toLocaleString() : "No Data") +
+			"\n\nOffensive Assists: " + (compGmStats.offensive_assists ? compGmStats.offensive_assists.toLocaleString() : "No Data") +
+			"\nDefensive Assists: " + (compGmStats.defensive_assists ? compGmStats.defensive_assists.toLocaleString() : "No Data") +
+			"\n\nTime Spent on Fire: " + (compGmStats.time_spent_on_fire ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire * 3600).format('H:mm:ss') + " (" + (Math.round((compGmStats.time_spent_on_fire / compGmStats.time_played) * 1000) / 10)  + "% of the time)" : "No Data") +
+			"\nObjective Time: " + (compGmStats.objective_time ? moment().startOf('day').seconds(compGmStats.objective_time * 3600).format('H:mm:ss') : "No Data") +
+			"\nTeleporter / Shield Generators Destroyed: " + (compGmStats.teleporter_pads_destroyed ? compGmStats.teleporter_pads_destroyed.toLocaleString() : "No Data") +
+
+			"\n\n#Current Season Records" +
+			"\nDamage Done: " + (compGmStats.damage_done_most_in_game ? compGmStats.damage_done_most_in_game.toLocaleString() : "No Data") +
+			"\nHealing Done: " + (compGmStats.healing_done_most_in_game ? compGmStats.healing_done_most_in_game.toLocaleString() : "No Data") +
+			"\n\nEliminations: " + (compGmStats.eliminations_most_in_game? compGmStats.eliminations_most_in_game.toLocaleString() : "No Data") +
+			"\n\nObjective Kills: " + (compGmStats.objective_kills_most_in_game ? compGmStats.objective_kills_most_in_game.toLocaleString() : "No Data")+
+			"\nFinal Blows: " + (compGmStats.final_blows_most_in_game ? compGmStats.final_blows_most_in_game.toLocaleString() : "No Data" ) +
+			// Need to work on this one to catch if the user only has 1 killing blow and return 1 instead of No Data. <-- Done
+			"\nMelee Final Blows: " + (compGmStats.melee_final_blows_most_in_game ? compGmStats.melee_final_blows_most_in_game.toLocaleString() : compGmStats.melee_final_blow_most_in_game ? compGmStats.melee_final_blow_most_in_game.toLocaleString() : "No Data") +
+			"\nSolo Kills: " + (compGmStats.solo_kills_most_in_game ? compGmStats.solo_kills_most_in_game.toLocaleString() : "No Data") +
+			"\nMultikill: " + (compGmStats.multikill_best ? compGmStats.multikill_best.toLocaleString() : "No Data") +
+			"\n\nOffensive Assists: " + (compGmStats.offensive_assists_most_in_game ? compGmStats.offensive_assists_most_in_game.toLocaleString() : "No Data") +
+			"\nDefensive Assists: " + (compGmStats.defensive_assists_most_in_game ? compGmStats.defensive_assists_most_in_game.toLocaleString() : "No Data") +
+			"\n\nTime Spent on Fire in a Single Game: " + (compGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : "No Data") +
+			"\nObjective Time in a Single Game: " + (compGmStats.objective_time_most_in_game ? moment().startOf('day').seconds(compGmStats.objective_time_most_in_game * 3600).format('H:mm:ss') : "No Data") +
+			 "```");
 			//"\nAverage Deaths: " + competitiveData.average_stats.deaths_avg + "```");
 	}
 
