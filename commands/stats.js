@@ -75,7 +75,6 @@ const stats = msg => {
 			"\n\nEliminations: " + (QPGmStats.eliminations_most_in_game? QPGmStats.eliminations_most_in_game.toLocaleString() : "No Data") +
 			"\n\nObjective Kills: " + (QPGmStats.objective_kills_most_in_game ? QPGmStats.objective_kills_most_in_game.toLocaleString() : "No Data")+
 			"\nFinal Blows: " + (QPGmStats.final_blows_most_in_game ? QPGmStats.final_blows_most_in_game.toLocaleString() : "No Data" ) +
-			// Need to work on this one to catch if the user only has 1 killing blow and return 1 instead of No Data. <-- Done
 			"\nMelee Final Blows: " + (QPGmStats.melee_final_blows_most_in_game ? QPGmStats.melee_final_blows_most_in_game.toLocaleString() : QPGmStats.melee_final_blow_most_in_game ? QPGmStats.melee_final_blow_most_in_game.toLocaleString() : "No Data") +
 			"\nSolo Kills: " + (QPGmStats.solo_kills_most_in_game ? QPGmStats.solo_kills_most_in_game.toLocaleString() : "No Data") +
 			"\nBest Multikill: " + (QPGmStats.multikill_best ? QPGmStats.multikill_best.toLocaleString() : "No Data") +
@@ -140,7 +139,6 @@ const stats = msg => {
 			"\n\nEliminations: " + (compGmStats.eliminations_most_in_game? compGmStats.eliminations_most_in_game.toLocaleString() : "No Data") +
 			"\n\nObjective Kills: " + (compGmStats.objective_kills_most_in_game ? compGmStats.objective_kills_most_in_game.toLocaleString() : "No Data")+
 			"\nFinal Blows: " + (compGmStats.final_blows_most_in_game ? compGmStats.final_blows_most_in_game.toLocaleString() : "No Data" ) +
-			// Need to work on this one to catch if the user only has 1 killing blow and return 1 instead of No Data. <-- Done
 			"\nMelee Final Blows: " + (compGmStats.melee_final_blows_most_in_game ? compGmStats.melee_final_blows_most_in_game.toLocaleString() : compGmStats.melee_final_blow_most_in_game ? compGmStats.melee_final_blow_most_in_game.toLocaleString() : "No Data") +
 			"\nSolo Kills: " + (compGmStats.solo_kills_most_in_game ? compGmStats.solo_kills_most_in_game.toLocaleString() : "No Data") +
 			"\nBest Multikill: " + (compGmStats.multikill_best ? compGmStats.multikill_best.toLocaleString() : "No Data") +
@@ -149,7 +147,6 @@ const stats = msg => {
 			"\n\nTime Spent on Fire in a Single Game: " + (compGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : "No Data") +
 			"\nObjective Time in a Single Game: " + (compGmStats.objective_time_most_in_game ? moment().startOf('day').seconds(compGmStats.objective_time_most_in_game * 3600).format('H:mm:ss') : "No Data") +
 			 "```");
-			//"\nAverage Deaths: " + competitiveData.average_stats.deaths_avg + "```");
 	}
 
 	// Putting a hold on this one for now. - Turbo
@@ -173,8 +170,8 @@ const stats = msg => {
 		// 	500: "Bwa Bwa Bwa Bwa. There is an issue with the Overwatch API. Try again later.",
 		// 	429: "Bweeeeeeeeeeeoh. Try again in a few seconds. The Overwatch API is being poked too much"
 		// }
-
-		if (parsedBody.error !== 404 || parsedBody.error !== 500) {
+  	// Sucrizzle - This should be an "AND" not "OR" like I had it before *face palm*
+		if (parsedBody.error !== 404 && parsedBody.error !== 500) {
 			fn(error, response, parsedBody)
 		}
 		else if (parsedBody.error === 500 ) {
