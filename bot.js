@@ -16,7 +16,7 @@ const adminPrefix = '*';
 const bot = new Discord.Client({autoReconnect: true});
 
 bot.on('ready', () => {
-	const botTestChannel = bot.channels.find('name', 'use_enslaved_omnics_here');
+	const botTestChannel = bot.channels.find('name', 'bottestchannel');
 	botTestChannel.sendMessage('Boo Boo Bee Doo... Omnic is ready to serve its CC337 Overlords!');
 	console.log(`Bot Online`);
 	bot.user.setGame('$bothelp');
@@ -79,7 +79,7 @@ bot.on('message', msg => {
 });
 
 bot.on('disconnect', msg => {
-	const botTestChannel = bot.channels.find('name', 'use_enslaved_omnics_here');
+	const botTestChannel = bot.channels.find('name', 'bottestchannel');
 	botTestChannel.sendMessage('Bee Bee Boop ... Bot Disconnected');
 });
 
