@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const apiV3UrlRoot = 'https://owapi.net/api/v3';
 
-const stats = msg => {
+const stats = (msg, msgID) => {
 	const msgStatsContent = msg.content.slice(7);
 	const msgCompStatsContent = msg.content.slice(11);
 	const msgAvgStatsContent = msg.content.slice(10);
@@ -91,13 +91,13 @@ const stats = msg => {
 		const compOvrStats = competitiveData.overall_stats;
 		const emptyObjectCompChecker = Object.getOwnPropertyNames(competitiveData);
 		if (emptyObjectCompChecker.length === 0 || emptyObjectCompChecker.length === 0) {
-			msg.reply("Sorry. This user has missing data. Boo boo doo de doo.");
+			message.edit("Sorry. This user has missing data. Boo boo doo de doo.");
 			return;
 		}
 
 		// Make sure the user has played some games this comp Season.  Not sure if it would be null or 0 or ???  Taking a guess here
 		if (compOvrStats.games == null || compOvrStats.games == 0) {
-			msg.reply("You need to play some games first.  Bibbity bobbity boo");
+			message.edit("You need to play some games first.  Bibbity bobbity boo");
 			return;
 		}
 
@@ -162,6 +162,7 @@ const stats = msg => {
 	//Then use the function that was passed in below to display
 	//the users data in discord.
 	lookupCorrectFn = fn => (error, response, body) => {
+		//Let user know that the bot is working on the request
 		const parsedBody = JSON.parse(body);
 
 		// Will work on this later. - Turbo
@@ -178,7 +179,9 @@ const stats = msg => {
 			msg.reply("Bwa Bwa Bwa Bwa. There is an issue with the Overwatch API. Try again later.");
 		}
 		else {
-			msg.reply("Bweeeeeeeeeeeoh. There was an error finding that user. Usernames are case sensitive. Try again.");
+			msg.channel.fetchMessage(msgID)
+				.then(message => message.edit("Bweeeeeeeeeeeoh. There was an error finding that user. Usernames are case sensitive. Try again."))
+				.catch(console.error);
 		}
 	}
 

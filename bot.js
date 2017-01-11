@@ -56,7 +56,10 @@ bot.on('message', msg => {
 			msg.content.startsWith(prefix + 'compstats') ||
 			msg.content.startsWith(prefix + 'avgstats')
 		) {
-				stats(msg);
+				msg.reply("Working on your request.")
+					.then(message => {const msgID = message.id; console.log(`Reply Message ID: ${message.id}`); stats(msg, msgID);})
+					.catch(console.error);
+
 		}
 
 		//$bothelp
