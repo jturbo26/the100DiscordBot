@@ -45,7 +45,6 @@ const stats = (msg, msgID) => {
 					message.edit("Sorry. This user has missing data. Boo boo doo de doo.");
 				});
 			return;
-			return;
 		}
 		msg.channel.fetchMessage(msgID)
 			.then(message => {
