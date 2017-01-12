@@ -45,7 +45,6 @@ const stats = (msg, msgID) => {
 					message.edit("Sorry. This user has missing data. Boo boo doo de doo.");
 				});
 			return;
-			return;
 		}
 		msg.channel.fetchMessage(msgID)
 			.then(message => {
@@ -180,12 +179,14 @@ const stats = (msg, msgID) => {
 			fn(error, response, parsedBody)
 		}
 		else if (parsedBody.error === 500 ) {
-			msg.reply("Bwa Bwa Bwa Bwa. There is an issue with the Overwatch API. Try again later.");
+			msg.channel.fetchMessage(msgID)
+				.then(message => {
+					message.edit("Bwa Bwa Bwa Bwa. There is an issue with the Overwatch API. Try again later.");
+				})
 		}
 		else {
 			msg.channel.fetchMessage(msgID)
 				.then(message => {
-					console.log("id=", msgID, "message=", message);
 					message.edit("Bweeeeeeeeeeeoh. There was an error finding that user. Usernames are case sensitive. Try again.");
 				})
 				.catch(console.error);
