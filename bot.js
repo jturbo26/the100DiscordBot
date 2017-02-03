@@ -7,6 +7,7 @@ const games = require('./commands/games.js');
 const botHelp = require('./commands/bothelp.js');
 const userStatus = require('./commands/users.js');
 const stats = require('./commands/stats.js');
+const popcornGif = require('./commands/popcornGif.js');
 
 const authDetails = require('./auth.json');
 
@@ -73,6 +74,10 @@ bot.on('message', msg => {
 		//$my100status
 		else if (msg.content.startsWith(prefix + 'my100status')) {
 			userStatus(msg);
+		}
+
+		else if (msg.content.startsWith(prefix + 'popcorn')) {
+			popcornGif(msg);
 		}
 
 		else if (msg.content.startsWith(adminPrefix + 'shutdown')) {
