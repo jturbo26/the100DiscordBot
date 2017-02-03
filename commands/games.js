@@ -29,7 +29,7 @@ const todaysDate = () => {
 const games = msg => {
 	console.log('$games was called');
 	const getGames = (error, response, body) => {
-		if (!error && response.statusCode == 200) {
+		if (!error && response.statusCode === 200) {
 			const gamesJson = JSON.parse(body);
 			const today = todaysDate();
 			const games = gamesJson.filter(game => {
