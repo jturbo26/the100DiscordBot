@@ -26,6 +26,7 @@ bot.on('ready', () => {
 bot.on('guildMemberAdd', (guildMember) => {
 	const generalChannel = guildMember.guild.channels.find('name', 'general');
 	const coreChannel = guildMember.guild.channels.find('name', 'core_member_chat');
+	const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
 	generalChannel.sendMessage('Hey '+ guildMember.user + '!! Great to have you! A few things you should do now:\n' +
 		'```1. Please be sure your Discord nickname match your Battlenet id, including the #1234 at the end.\n' +
 		'2. Head over to #introductions and introduce yourself. Who are you? What games do you play? Who\'s your fav OW Hero?\n' +
@@ -34,10 +35,16 @@ bot.on('guildMemberAdd', (guildMember) => {
 		'5. Follow the #rules, and enjoy our little gaming community!```\n' +
 		'If you have any questions, reach out to an @moderator or @CC337_Core_Member and we\'re happy to help!'
 	);
-	coreChannel.sendMessage('Hey Core Members! We have a new member. Please be sure to welcome them and encourage them to participate!\n' +
-		'\nNew Member= ' + guildMember.user
+	coreChannel.sendMessage(`Hey Core Members! We have a new member. Please be sure to welcome them and encourage them to participate!
+		New Member = ${guildMember.user}`
 	);
+	memberLogChannel.sendMessage(`New Member = ${guildMember.user}`);
 });
+
+bot.on('guildMemberRemove', (guildMember) => {
+	const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
+	memberLogChannel.sendMessage(`Member Left = ${guildMember.user}`);
+})
 
 bot.on('message', msg => {
 
