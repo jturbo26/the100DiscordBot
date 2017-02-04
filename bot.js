@@ -28,7 +28,7 @@ bot.on('guildMemberAdd', (guildMember) => {
 	const coreChannel = guildMember.guild.channels.find('name', 'core_member_chat');
 	generalChannel.sendMessage('Hey '+ guildMember.user + '!! Great to have you! A few things you should do now:\n' +
 		'```1. Please be sure your Discord nickname match your Battlenet id, including the #1234 at the end.\n' +
-		'2. Head over to #introductions and inroduce yourself. Who are you? What games do you play? Who\'s your fav OW Hero?\n' +
+		'2. Head over to #introductions and introduce yourself. Who are you? What games do you play? Who\'s your fav OW Hero?\n' +
 		'3. Stop by the #use_enslaved_omnics_here channel to see if we have any games scheduled using the command $games\n' +
 		'4. Sign up for some games on the100.io or start a PUG with people here in Discord\n' +
 		'5. Follow the #rules, and enjoy our little gaming community!```\n' +
