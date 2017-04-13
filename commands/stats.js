@@ -72,7 +72,8 @@ const stats = (msg, msgID) => {
 					"\nDefensive Assists: " + (QPGmStats.defensive_assists ? QPGmStats.defensive_assists.toLocaleString() : "No Data") +
 					"\n\nTime Spent on Fire: " + (QPGmStats.time_spent_on_fire ? moment().startOf('day').seconds(QPGmStats.time_spent_on_fire * 3600).format('H:mm:ss') + " (" + (Math.round((QPGmStats.time_spent_on_fire / QPGmStats.time_played) * 1000) / 10)  + "% of the time)" : "No Data") +
 					"\nObjective Time: " + (QPGmStats.objective_time ? moment().startOf('day').seconds(QPGmStats.objective_time * 3600).format('H:mm:ss') : "No Data") +
-					"\nTeleporter / Shield Generators Destroyed: " + (QPGmStats.teleporter_pads_destroyed ? QPGmStats.teleporter_pads_destroyed.toLocaleString() : "No Data") +
+					"\nTeleporter Pads Destroyed: " + (QPGmStats.teleporter_pads_destroyed ? QPGmStats.teleporter_pads_destroyed.toLocaleString() : "No Data") +
+					"\nShield Generators Destroyed: " + (QPGmStats.shield_generators_destroyed ? QPGmStats.shield_generators_destroyed.toLocaleString() : "No Data") +
 					"\n\n#Lifetime Records" +
 					"\nDamage Done: " + (QPGmStats.damage_done_most_in_game ? QPGmStats.damage_done_most_in_game.toLocaleString() : "No Data") +
 					"\nHealing Done: " + (QPGmStats.healing_done_most_in_game ? QPGmStats.healing_done_most_in_game.toLocaleString() : "No Data") +
@@ -145,7 +146,8 @@ const stats = (msg, msgID) => {
 			"\nDefensive Assists: " + (compGmStats.defensive_assists ? compGmStats.defensive_assists.toLocaleString() : "No Data") +
 			"\n\nTime Spent on Fire: " + (compGmStats.time_spent_on_fire ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire * 3600).format('H:mm:ss') + " (" + (Math.round((compGmStats.time_spent_on_fire / compGmStats.time_played) * 1000) / 10)  + "% of the time)" : "No Data") +
 			"\nObjective Time: " + (compGmStats.objective_time ? moment().startOf('day').seconds(compGmStats.objective_time * 3600).format('H:mm:ss') : "No Data") +
-			"\nTeleporter / Shield Generators Destroyed: " + (compGmStats.teleporter_pads_destroyed ? compGmStats.teleporter_pads_destroyed.toLocaleString() : "No Data") +
+			"\nTeleporter Pads Destroyed: " + (compGmStats.teleporter_pads_destroyed ? compGmStats.teleporter_pads_destroyed.toLocaleString() : "No Data") +
+			"\nShield Generators Destroyed: " + (compGmStats.shield_generators_destroyed ? compGmStats.shield_generators_destroyed.toLocaleString() : "No Data") +
 
 			"\n\n#Current Season Records" +
 			"\nDamage Done: " + (compGmStats.damage_done_most_in_game ? compGmStats.damage_done_most_in_game.toLocaleString() : "No Data") +
