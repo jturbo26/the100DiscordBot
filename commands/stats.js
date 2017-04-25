@@ -1,5 +1,6 @@
 const request = require('request');
 const moment = require('moment');
+const Discord = require('discord.js')
 
 const apiV3UrlRoot = 'https://owapi.net/api/v3';
 
@@ -46,50 +47,81 @@ const stats = (msg, msgID) => {
 				});
 			return;
 		}
-		msg.channel.fetchMessage(msgID)
-			.then(message => {
-				message.edit("```Markdown" +
-					"\n#Here are quick play stats for " + msgStatsContent +
-					" (Level: "  + (QPOvrStats.prestige !== 0 ? QPOvrStats.prestige : '') + QPOvrStats.level +
-					" | Games Won: " + QPOvrStats.wins +
-					" | QP Time Played: " + QPGmStats.time_played + " hours)" +
-					"\n\n#Lifetime Totals" +
-					"\nMedals: " + QPGmStats.medals.toLocaleString() + " (G:" + QPGmStats.medals_gold.toLocaleString() + " S:" + QPGmStats.medals_silver.toLocaleString() + " B:" + QPGmStats.medals_bronze.toLocaleString() + ")" +
-					"\nVoting Cards: " + (QPGmStats.cards ? QPGmStats.cards.toLocaleString() : "No Data") +
-					"\n\nDamage Done: " + (QPGmStats.damage_done ? QPGmStats.damage_done.toLocaleString() : "No Data") +
-					"\nHealing Done: " + (QPGmStats.healing_done ? QPGmStats.healing_done.toLocaleString() : "No Data") +
-					"\n\nEliminations: " + (QPGmStats.eliminations ? QPGmStats.eliminations.toLocaleString() : "No Data") +
-					"\nDeaths: " + (QPGmStats.deaths ? QPGmStats.deaths.toLocaleString() : "No Data") +
-					"\nEliminations per Death: " + (QPGmStats.kpd ? QPGmStats.kpd.toLocaleString() : "No Data") +
-					"\n\nObjective Kills: " + (QPGmStats.objective_kills ? QPGmStats.objective_kills.toLocaleString() : "No Data") +
-					"\nEnvironmental Kills: " + (QPGmStats.environmental_kills ? QPGmStats.environmental_kills.toLocaleString() : "No Data") +
-					"\nEnvironmental Deaths: " + (QPGmStats.environmental_deaths ? QPGmStats.environmental_deaths.toLocaleString() : "No Data") +
-					"\nFinal Blows: " + (QPGmStats.final_blows ? QPGmStats.final_blows.toLocaleString() : "No Data") +
-					"\nMelee Final Blows: " + (QPGmStats.melee_final_blows ? QPGmStats.melee_final_blows.toLocaleString() : QPGmStats.melee_final_blow ? QPGmStats.melee_final_blow.toLocaleString() : "No Data") +
-					"\nSolo Kills: " + (QPGmStats.solo_kills ? QPGmStats.solo_kills.toLocaleString() : "No Data") +
-					"\nMultikills: " + (QPGmStats.multikills ? QPGmStats.multikills.toLocaleString() : "No Data") +
-					"\n\nOffensive Assists: " + (QPGmStats.offensive_assists ? QPGmStats.offensive_assists.toLocaleString() : "No Data") +
-					"\nDefensive Assists: " + (QPGmStats.defensive_assists ? QPGmStats.defensive_assists.toLocaleString() : "No Data") +
-					"\n\nTime Spent on Fire: " + (QPGmStats.time_spent_on_fire ? moment().startOf('day').seconds(QPGmStats.time_spent_on_fire * 3600).format('H:mm:ss') + " (" + (Math.round((QPGmStats.time_spent_on_fire / QPGmStats.time_played) * 1000) / 10)  + "% of the time)" : "No Data") +
-					"\nObjective Time: " + (QPGmStats.objective_time ? moment().startOf('day').seconds(QPGmStats.objective_time * 3600).format('H:mm:ss') : "No Data") +
-					"\nTeleporter Pads Destroyed: " + (QPGmStats.teleporter_pads_destroyed ? QPGmStats.teleporter_pads_destroyed.toLocaleString() : "No Data") +
-					"\nShield Generators Destroyed: " + (QPGmStats.shield_generators_destroyed ? QPGmStats.shield_generators_destroyed.toLocaleString() : "No Data") +
-					"\n\n#Lifetime Records" +
-					"\nDamage Done: " + (QPGmStats.damage_done_most_in_game ? QPGmStats.damage_done_most_in_game.toLocaleString() : "No Data") +
-					"\nHealing Done: " + (QPGmStats.healing_done_most_in_game ? QPGmStats.healing_done_most_in_game.toLocaleString() : "No Data") +
-					"\n\nEliminations: " + (QPGmStats.eliminations_most_in_game? QPGmStats.eliminations_most_in_game.toLocaleString() : "No Data") +
-					"\n\nObjective Kills: " + (QPGmStats.objective_kills_most_in_game ? QPGmStats.objective_kills_most_in_game.toLocaleString() : "No Data")+
-					"\nFinal Blows: " + (QPGmStats.final_blows_most_in_game ? QPGmStats.final_blows_most_in_game.toLocaleString() : "No Data" ) +
-					"\nMelee Final Blows: " + (QPGmStats.melee_final_blows_most_in_game ? QPGmStats.melee_final_blows_most_in_game.toLocaleString() : QPGmStats.melee_final_blow_most_in_game ? QPGmStats.melee_final_blow_most_in_game.toLocaleString() : "No Data") +
-					"\nSolo Kills: " + (QPGmStats.solo_kills_most_in_game ? QPGmStats.solo_kills_most_in_game.toLocaleString() : "No Data") +
-					"\nBest Multikill: " + (QPGmStats.multikill_best ? QPGmStats.multikill_best.toLocaleString() : "No Data") +
-					"\n\nOffensive Assists: " + (QPGmStats.offensive_assists_most_in_game ? QPGmStats.offensive_assists_most_in_game.toLocaleString() : "No Data") +
-					"\nDefensive Assists: " + (QPGmStats.defensive_assists_most_in_game ? QPGmStats.defensive_assists_most_in_game.toLocaleString() : "No Data") +
-					"\n\nTime Spent on Fire in a Single Game: " + (QPGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(QPGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : "No Data") +
-					"\nObjective Time in a Single Game: " + (QPGmStats.objective_time_most_in_game ? moment().startOf('day').seconds(QPGmStats.objective_time_most_in_game * 3600).format('H:mm:ss') : "No Data") +
-				  "```");
-				})
-				.catch(console.error);
+		//Build the Embed version of the stats display
+		const embed = new Discord.RichEmbed()
+			.setAuthor(msgStatsContent + '\'s Quick Play Information', QPOvrStats.avatar)
+			.setColor(0x00AE86)
+			.setTimestamp()
+			.setURL()
+			.setFooter('© Brought to you by TurboJoe & Sucrizzle')
+			.addField('__Quick Play Statistics__', ('**Level:** ' + (QPOvrStats.prestige !== 0 ? QPOvrStats.prestige : '') + QPOvrStats.level
+                                                + '\n\n**Time Played:** ' + QPGmStats.time_played.toLocaleString() + ' hours'
+                                                + '\n**Record:** ' + QPOvrStats.wins.toLocaleString() + '-' + QPOvrStats.losses.toLocaleString()
+                                                + ' (' + QPOvrStats.win_rate + '% Win Rate in ' + QPOvrStats.games.toLocaleString() + ' games)'
+                                                + '\n\n**Voting Cards Earned:** ' + QPGmStats.cards.toLocaleString()
+                                                + '\n**Medals Awarded:** ' + QPGmStats.medals.toLocaleString()
+                                                + ' (G: ' + QPGmStats.medals_gold.toLocaleString() + ' S: ' + QPGmStats.medals_silver.toLocaleString() +  ' B: ' + QPGmStats.medals_bronze.toLocaleString() + ')'
+																							  )
+							 )
+			.addField('__Eliminations__', '**Average: **' + (QPGmStats.eliminations ? (QPGmStats.eliminations / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + ' (' + (QPGmStats.kpd ? QPGmStats.kpd.toLocaleString() : "-") + 'k/d)'
+                                + '\n**Most: **' + (QPGmStats.eliminations_most_in_game ? QPGmStats.eliminations_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (QPGmStats.eliminations ? QPGmStats.eliminations.toLocaleString() : '-')
+			,true)
+			.addField('__Damage__', '**Average: **' + (QPGmStats.damage_done ? (QPGmStats.damage_done / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 0}) : '-')
+                                + '\n**Most: **' + (QPGmStats.damage_done_most_in_game ? QPGmStats.damage_done_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (QPGmStats.damage_done ? QPGmStats.damage_done.toLocaleString() : '-')
+			, true)
+			.addField('__Healing__', '**Average: **' + (QPGmStats.healing_done ? (QPGmStats.healing_done / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 0}) : '-')
+                                + '\n**Most: **' + (QPGmStats.healing_done_most_in_game ? QPGmStats.healing_done_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (QPGmStats.healing_done ? QPGmStats.healing_done.toLocaleString() : '-')
+			, true)
+			.addField('__Solo Kills__', '**Average: **' + (QPGmStats.solo_kills ? (QPGmStats.solo_kills / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (QPGmStats.solo_kills_most_in_game ? QPGmStats.solo_kills_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (QPGmStats.solo_kills ? QPGmStats.solo_kills.toLocaleString() : '-')
+			,true)
+			.addField('__Final Blows__', '**Average: **' + (QPGmStats.final_blows ? (QPGmStats.final_blows / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (QPGmStats.final_blows_most_in_game ? QPGmStats.final_blows_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (QPGmStats.final_blows ? QPGmStats.final_blows.toLocaleString() : '-')
+			, true)
+			.addField('__Melee Kills__', '**Average: **' + (QPGmStats.melee_final_blows ? (QPGmStats.melee_final_blows / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : QPGmStats.melee_final_blow ? (QPGmStats.melee_final_blow/ QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : "-")
+                                + '\n**Most: **' + (QPGmStats.melee_final_blows_most_in_game ? QPGmStats.melee_final_blows_most_in_game.toLocaleString() : QPGmStats.melee_final_blow_most_in_game ? QPGmStats.melee_final_blow_most_in_game.toLocaleString() : "-")
+                                + '\n**Total: **' + (QPGmStats.melee_final_blows ? QPGmStats.melee_final_blows.toLocaleString() : QPGmStats.melee_final_blow ? QPGmStats.melee_final_blow.toLocaleString() : "-")
+			, true)
+			.addField('__Objectives Kills__', '**Average: **' + (QPGmStats.objective_kills ? (QPGmStats.objective_kills / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (QPGmStats.objective_kills_most_in_game ? QPGmStats.objective_kills_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (QPGmStats.objective_kills ? QPGmStats.objective_kills.toLocaleString() : '-')
+			, true)
+			.addField('__Offensive Assists__', '**Average: **' + (QPGmStats.offensive_assists ? (QPGmStats.offensive_assists / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (QPGmStats.offensive_assists_most_in_game ? QPGmStats.offensive_assists_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (QPGmStats.offensive_assists ? QPGmStats.offensive_assists.toLocaleString() : '-')
+			, true)
+			.addField('__Defensive Assists__', '**Average: **' + (QPGmStats.defensive_assists ? (QPGmStats.defensive_assists / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (QPGmStats.defensive_assists_most_in_game ? QPGmStats.defensive_assists_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (QPGmStats.defensive_assists ? QPGmStats.defensive_assists.toLocaleString() : '-')
+			, true)
+			.addField('__Objective Time__', '**Average: **' + (QPGmStats.objective_time ? moment().startOf('day').seconds((QPGmStats.objective_time / QPOvrStats.games) * 3600).format('H:mm:ss') : '-')
+                                + '\n**Most: **' + (QPGmStats.objective_time_most_in_game ? moment().startOf('day').seconds(QPGmStats.objective_time_most_in_game * 3600).format('H:mm:ss') : '-')
+                                + '\n**Total: **' + (QPGmStats.objective_time ? moment().startOf('day').seconds(QPGmStats.objective_time * 3600).format('H:mm:ss') : '-')
+			, true)
+			.addField('__Time on Fire__', '**Average: **' + (QPGmStats.time_spent_on_fire ? moment().startOf('day').seconds((QPGmStats.time_spent_on_fire / QPOvrStats.games) * 3600).format('H:mm:ss') : '-')
+                                + '\n**Most: **' + (QPGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(QPGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : '-')
+                                + '\n**Total: **' + (QPGmStats.time_spent_on_fire ? moment().startOf('day').seconds(QPGmStats.time_spent_on_fire * 3600).format('H:mm:ss') : '-')
+			, true)
+			.addField('__Other Stats__', '**Multikills: **' + (QPGmStats.multikills ? QPGmStats.multikills.toLocaleString() : '-')
+                                + ' (Best Multikill: ' + (QPGmStats.multikill_best ? QPGmStats.multikill_best.toLocaleString() : '-') + ')'
+                                + '\n**Environmental Kills: **' + (QPGmStats.environmental_kills ? QPGmStats.environmental_kills.toLocaleString() : '-')
+                                + '\n**Environmental Deaths:** ' + (QPGmStats.environmental_deaths ? QPGmStats.environmental_deaths.toLocaleString() : '-')
+                                + '\n**Turrets Destroyed:** ' + (QPGmStats.turrets_destroyed ? QPGmStats.turrets_destroyed.toLocaleString() : '-')
+                                + '\n**Teleporters Destroyed:** ' + (QPGmStats.teleporter_pads_destroyed ? QPGmStats.teleporter_pads_destroyed.toLocaleString() : '-')
+                                + '\n**Shield Generators Destroyed:** ' + (QPGmStats.shield_generators_destroyed ? QPGmStats.shield_generators_destroyed.toLocaleString() : '-')
+			);
+
+			// Edit the original response with the embed
+			msg.channel.fetchMessage(msgID)
+				.then(message => {
+					message.edit(message.channel.sendEmbed(embed, {disableEveryone: true}))})
+			.catch(console.error);
 		}
 
 	const getCompUserStats = (error, response, parsedBody) => {
@@ -113,57 +145,95 @@ const stats = (msg, msgID) => {
 				});
 			return;
 		}
+		// Build links to the comp icons
+		const compIconDict = {
+			'bronze':      'http://vignette4.wikia.nocookie.net/overwatch/images/8/8f/Competitive_Bronze_Icon.png',
+			'silver':      'http://vignette4.wikia.nocookie.net/overwatch/images/f/fe/Competitive_Silver_Icon.png',
+			'gold':        'http://vignette3.wikia.nocookie.net/overwatch/images/4/44/Competitive_Gold_Icon.png',
+			'platinum':    'http://vignette2.wikia.nocookie.net/overwatch/images/e/e4/Competitive_Platinum_Icon.png',
+			'diamond':     'http://vignette1.wikia.nocookie.net/overwatch/images/3/3f/Competitive_Diamond_Icon.png',
+			'master':      'http://vignette2.wikia.nocookie.net/overwatch/images/5/50/Competitive_Master_Icon.png',
+			'grandmaster': 'http://vignette2.wikia.nocookie.net/overwatch/images/c/cc/Competitive_Grandmaster_Icon.png'
+		};
 
-		msg.channel.fetchMessage(msgID)
-			.then(message => {
-				message.edit("```Markdown" +
-			// Can we find a way to insert player icon?
-			//"\n" + compOvrStats.avatar +
-			"\n#Here are competitive stats for " + msgCompStatsContent +
-			" (CompRank: " + (compOvrStats.comprank !== null
-				? (compOvrStats.comprank +
-					" | Current Tier: " + compOvrStats.tier.charAt(0).toUpperCase() + compOvrStats.tier.slice(1) +
-					" | Time Played: " + compGmStats.time_played + " hours"
-				  )
-				: "Not Ranked") + ")" +
-			"\n\n#Current Season Totals" +
-			"\nComp Record: " + (compOvrStats.wins) + "-" + (compOvrStats.losses) + '-' + (compOvrStats.ties) + " (" + (compOvrStats.win_rate) + "% Win Rate)" +
-			"\nMedals: " + compGmStats.medals.toLocaleString() + " (G:" + compGmStats.medals_gold.toLocaleString() + " S:" + compGmStats.medals_silver.toLocaleString() + " B:" + compGmStats.medals_bronze.toLocaleString() + ")" +
-			"\nVoting Cards: " + (compGmStats.cards ? compGmStats.cards.toLocaleString() : "No Data") +
-			"\n\nDamage Done: " + (compGmStats.damage_done ? compGmStats.damage_done.toLocaleString() : "No Data") +
-			"\nHealing Done: " + (compGmStats.healing_done ? compGmStats.healing_done.toLocaleString() : "No Data") +
-			"\n\nEliminations: " + (compGmStats.eliminations ? compGmStats.eliminations.toLocaleString() : "No Data") +
-			"\nDeaths: " + (compGmStats.deaths ? compGmStats.deaths.toLocaleString() : "No Data") +
-			"\nEliminations per Death: " + (compGmStats.kpd ? compGmStats.kpd.toLocaleString() : "No Data") +
-			"\n\nObjective Kills: " + (compGmStats.objective_kills ? compGmStats.objective_kills.toLocaleString() : "No Data") +
-			"\nEnvironmental Kills: " + (compGmStats.environmental_kills ? compGmStats.environmental_kills.toLocaleString() : "No Data") +
-			"\nEnvironmental Deaths: " + (compGmStats.environmental_deaths ? compGmStats.environmental_deaths.toLocaleString() : "No Data") +
-			"\nFinal Blows: " + (compGmStats.final_blows ? compGmStats.final_blows.toLocaleString() : "No Data") +
-			"\nMelee Final Blows: " + (compGmStats.melee_final_blows ? compGmStats.melee_final_blows.toLocaleString() : compGmStats.melee_final_blow ? compGmStats.melee_final_blow.toLocaleString() : "No Data") +
-			"\nSolo Kills: " + (compGmStats.solo_kills ? compGmStats.solo_kills.toLocaleString() : "No Data") +
-			"\nMultikills: " + (compGmStats.multikills ? compGmStats.multikills.toLocaleString() : "No Data") +
-			"\n\nOffensive Assists: " + (compGmStats.offensive_assists ? compGmStats.offensive_assists.toLocaleString() : "No Data") +
-			"\nDefensive Assists: " + (compGmStats.defensive_assists ? compGmStats.defensive_assists.toLocaleString() : "No Data") +
-			"\n\nTime Spent on Fire: " + (compGmStats.time_spent_on_fire ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire * 3600).format('H:mm:ss') + " (" + (Math.round((compGmStats.time_spent_on_fire / compGmStats.time_played) * 1000) / 10)  + "% of the time)" : "No Data") +
-			"\nObjective Time: " + (compGmStats.objective_time ? moment().startOf('day').seconds(compGmStats.objective_time * 3600).format('H:mm:ss') : "No Data") +
-			"\nTeleporter Pads Destroyed: " + (compGmStats.teleporter_pads_destroyed ? compGmStats.teleporter_pads_destroyed.toLocaleString() : "No Data") +
-			"\nShield Generators Destroyed: " + (compGmStats.shield_generators_destroyed ? compGmStats.shield_generators_destroyed.toLocaleString() : "No Data") +
+		//Build the Embed version of the stats display
+		const embed = new Discord.RichEmbed()
+			.setAuthor(msgCompStatsContent + '\'s Competitive Information', compIconDict[compOvrStats.tier])
+			.setColor(0x00AE86)
+			.setTimestamp()
+			.setURL()
+			.setFooter('© Brought to you by TurboJoe & Sucrizzle')
 
-			"\n\n#Current Season Records" +
-			"\nDamage Done: " + (compGmStats.damage_done_most_in_game ? compGmStats.damage_done_most_in_game.toLocaleString() : "No Data") +
-			"\nHealing Done: " + (compGmStats.healing_done_most_in_game ? compGmStats.healing_done_most_in_game.toLocaleString() : "No Data") +
-			"\n\nEliminations: " + (compGmStats.eliminations_most_in_game? compGmStats.eliminations_most_in_game.toLocaleString() : "No Data") +
-			"\n\nObjective Kills: " + (compGmStats.objective_kills_most_in_game ? compGmStats.objective_kills_most_in_game.toLocaleString() : "No Data")+
-			"\nFinal Blows: " + (compGmStats.final_blows_most_in_game ? compGmStats.final_blows_most_in_game.toLocaleString() : "No Data" ) +
-			"\nMelee Final Blows: " + (compGmStats.melee_final_blows_most_in_game ? compGmStats.melee_final_blows_most_in_game.toLocaleString() : compGmStats.melee_final_blow_most_in_game ? compGmStats.melee_final_blow_most_in_game.toLocaleString() : "No Data") +
-			"\nSolo Kills: " + (compGmStats.solo_kills_most_in_game ? compGmStats.solo_kills_most_in_game.toLocaleString() : "No Data") +
-			"\nBest Multikill: " + (compGmStats.multikill_best ? compGmStats.multikill_best.toLocaleString() : "No Data") +
-			"\n\nOffensive Assists: " + (compGmStats.offensive_assists_most_in_game ? compGmStats.offensive_assists_most_in_game.toLocaleString() : "No Data") +
-			"\nDefensive Assists: " + (compGmStats.defensive_assists_most_in_game ? compGmStats.defensive_assists_most_in_game.toLocaleString() : "No Data") +
-			"\n\nTime Spent on Fire in a Single Game: " + (compGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : "No Data") +
-			"\nObjective Time in a Single Game: " + (compGmStats.objective_time_most_in_game ? moment().startOf('day').seconds(compGmStats.objective_time_most_in_game * 3600).format('H:mm:ss') : "No Data") +
-			 "```");
-		 })
+			.addField('__Competitive Statistics__', ('**Rank:** ' + (compOvrStats.comprank ? compOvrStats.comprank : '-')
+                                                + '\n\n**Time Played:** ' + compGmStats.time_played.toLocaleString() + ' hours'
+                                                + '\n**Record:** ' + compOvrStats.wins.toLocaleString() + '-' + compOvrStats.losses.toLocaleString() + '-' + compOvrStats.ties.toLocaleString()
+                                                + ' (' + compOvrStats.win_rate + '% Win Rate in ' + compOvrStats.games.toLocaleString() + ' games)'
+                                                + '\n\n**Voting Cards Earned:** ' + compGmStats.cards.toLocaleString()
+                                                + '\n**Medals Awarded:** ' + compGmStats.medals.toLocaleString()
+                                                + ' (G: ' + compGmStats.medals_gold.toLocaleString() + ' S: ' + compGmStats.medals_silver.toLocaleString() +  ' B: ' + compGmStats.medals_bronze.toLocaleString() + ')'
+                                                )
+							 )
+
+			.addField('__Eliminations__', '**Average: **' + (compGmStats.eliminations ? (compGmStats.eliminations / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + ' (' + (compGmStats.kpd ? compGmStats.kpd.toLocaleString() : "-") + 'k/d)'
+                                + '\n**Most: **' + (compGmStats.eliminations_most_in_game ? compGmStats.eliminations_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (compGmStats.eliminations ? compGmStats.eliminations.toLocaleString() : '-')
+			,true)
+			.addField('__Damage__', '**Average: **' + (compGmStats.damage_done ? (compGmStats.damage_done / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 0}) : '-')
+                                + '\n**Most: **' + (compGmStats.damage_done_most_in_game ? compGmStats.damage_done_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (compGmStats.damage_done ? compGmStats.damage_done.toLocaleString() : '-')
+			, true)
+			.addField('__Healing__', '**Average: **' + (compGmStats.healing_done ? (compGmStats.healing_done / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 0}) : '-')
+                                + '\n**Most: **' + (compGmStats.healing_done_most_in_game ? compGmStats.healing_done_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (compGmStats.healing_done ? compGmStats.healing_done.toLocaleString() : '-')
+			, true)
+			.addField('__Solo Kills__', '**Average: **' + (compGmStats.solo_kills ? (compGmStats.solo_kills / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (compGmStats.solo_kills_most_in_game ? compGmStats.solo_kills_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (compGmStats.solo_kills ? compGmStats.solo_kills.toLocaleString() : '-')
+			,true)
+			.addField('__Final Blows__', '**Average: **' + (compGmStats.final_blows ? (compGmStats.final_blows / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (compGmStats.final_blows_most_in_game ? compGmStats.final_blows_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (compGmStats.final_blows ? compGmStats.final_blows.toLocaleString() : '-')
+			, true)
+			.addField('__Melee Kills__', '**Average: **' + (compGmStats.melee_final_blows ? (compGmStats.melee_final_blows / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : compGmStats.melee_final_blow ? (compGmStats.melee_final_blow/ compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : "-")
+                                + '\n**Most: **' + (compGmStats.melee_final_blows_most_in_game ? compGmStats.melee_final_blows_most_in_game.toLocaleString() : compGmStats.melee_final_blow_most_in_game ? compGmStats.melee_final_blow_most_in_game.toLocaleString() : "-")
+                                + '\n**Total: **' + (compGmStats.melee_final_blows ? compGmStats.melee_final_blows.toLocaleString() : compGmStats.melee_final_blow ? compGmStats.melee_final_blow.toLocaleString() : "-")
+			, true)
+			.addField('__Objectives Kills__', '**Average: **' + (compGmStats.objective_kills ? (compGmStats.objective_kills / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (compGmStats.objective_kills_most_in_game ? compGmStats.objective_kills_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (compGmStats.objective_kills ? compGmStats.objective_kills.toLocaleString() : '-')
+			, true)
+			.addField('__Offensive Assists__', '**Average: **' + (compGmStats.offensive_assists ? (compGmStats.offensive_assists / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (compGmStats.offensive_assists_most_in_game ? compGmStats.offensive_assists_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (compGmStats.offensive_assists ? compGmStats.offensive_assists.toLocaleString() : '-')
+			, true)
+			.addField('__Defensive Assists__', '**Average: **' + (compGmStats.defensive_assists ? (compGmStats.defensive_assists / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+                                + '\n**Most: **' + (compGmStats.defensive_assists_most_in_game ? compGmStats.defensive_assists_most_in_game.toLocaleString() : '-')
+                                + '\n**Total: **' + (compGmStats.defensive_assists ? compGmStats.defensive_assists.toLocaleString() : '-')
+			, true)
+			.addField('__Objective Time__', '**Average: **' + (compGmStats.objective_time ? moment().startOf('day').seconds((compGmStats.objective_time / compOvrStats.games) * 3600).format('H:mm:ss') : '-')
+                                + '\n**Most: **' + (compGmStats.objective_time_most_in_game ? moment().startOf('day').seconds(compGmStats.objective_time_most_in_game * 3600).format('H:mm:ss') : '-')
+                                + '\n**Total: **' + (compGmStats.objective_time ? moment().startOf('day').seconds(compGmStats.objective_time * 3600).format('H:mm:ss') : '-')
+			, true)
+			.addField('__Time on Fire__', '**Average: **' + (compGmStats.time_spent_on_fire ? moment().startOf('day').seconds((compGmStats.time_spent_on_fire / compOvrStats.games) * 3600).format('H:mm:ss') : '-')
+                                + '\n**Most: **' + (compGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : '-')
+                                + '\n**Total: **' + (compGmStats.time_spent_on_fire ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire * 3600).format('H:mm:ss') : '-')
+			, true)
+			.addField('__Other Stats__', '**Multikills: **' + (compGmStats.multikills ? compGmStats.multikills.toLocaleString() : '-')
+                                + ' (Best Multikill: ' + (compGmStats.multikill_best ? compGmStats.multikill_best.toLocaleString() : '-') + ')'
+                                + '\n**Environmental Kills: **' + (compGmStats.environmental_kills ? compGmStats.environmental_kills.toLocaleString() : '-')
+                                + '\n**Environmental Deaths:** ' + (compGmStats.environmental_deaths ? compGmStats.environmental_deaths.toLocaleString() : '-')
+                                + '\n**Turrets Destroyed:** ' + (compGmStats.turrets_destroyed ? compGmStats.turrets_destroyed.toLocaleString() : '-')
+                                + '\n**Teleporters Destroyed:** ' + (compGmStats.teleporter_pads_destroyed ? compGmStats.teleporter_pads_destroyed.toLocaleString() : '-')
+                                + '\n**Shield Generators Destroyed:** ' + (compGmStats.shield_generators_destroyed ? compGmStats.shield_generators_destroyed.toLocaleString() : '-')
+
+			);
+
+			// Edit the original response with the embed
+			msg.channel.fetchMessage(msgID)
+				.then(message => {
+					message.edit(message.channel.sendEmbed(embed, {disableEveryone: true}))})
+			.catch(console.error);
 	 }
 
 	lookupCorrectFn = fn => (error, response, body) => {
