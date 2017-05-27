@@ -58,8 +58,8 @@ const stats = (msg, msgID) => {
                                                 + '\n\n**Time Played:** ' + QPGmStats.time_played.toLocaleString() + ' hours'
                                                 + '\n**Record:** ' + QPOvrStats.wins.toLocaleString() + '-' + QPOvrStats.losses.toLocaleString()
                                                 + ' (' + QPOvrStats.win_rate + '% Win Rate in ' + QPOvrStats.games.toLocaleString() + ' games)'
-                                                + '\n\n**Voting Cards Earned:** ' + QPGmStats.cards.toLocaleString()
-                                                + '\n**Medals Awarded:** ' + QPGmStats.medals.toLocaleString()
+                                                + '\n\n**Voting Cards Earned:** ' + (QPGmStats.cards ? QPGmStats.cards.toLocaleString() : QPGmStats.card ? QPGmStats.card.toLocaleString() : '-')
+                                                + '\n**Medals Awarded:** ' + (QPGmStats.medals ? QPGmStats.medals.toLocaleString() : '-')
                                                 + ' (G: ' + QPGmStats.medals_gold.toLocaleString() + ' S: ' + QPGmStats.medals_silver.toLocaleString() +  ' B: ' + QPGmStats.medals_bronze.toLocaleString() + ')'
 																							  )
 							 )
@@ -88,7 +88,7 @@ const stats = (msg, msgID) => {
                                 + '\n**Most: **' + (QPGmStats.melee_final_blows_most_in_game ? QPGmStats.melee_final_blows_most_in_game.toLocaleString() : QPGmStats.melee_final_blow_most_in_game ? QPGmStats.melee_final_blow_most_in_game.toLocaleString() : "-")
                                 + '\n**Total: **' + (QPGmStats.melee_final_blows ? QPGmStats.melee_final_blows.toLocaleString() : QPGmStats.melee_final_blow ? QPGmStats.melee_final_blow.toLocaleString() : "-")
 			, true)
-			.addField('__Objectives Kills__', '**Average: **' + (QPGmStats.objective_kills ? (QPGmStats.objective_kills / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+			.addField('__Objective Kills__', '**Average: **' + (QPGmStats.objective_kills ? (QPGmStats.objective_kills / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
                                 + '\n**Most: **' + (QPGmStats.objective_kills_most_in_game ? QPGmStats.objective_kills_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (QPGmStats.objective_kills ? QPGmStats.objective_kills.toLocaleString() : '-')
 			, true)
@@ -120,7 +120,7 @@ const stats = (msg, msgID) => {
 			// Edit the original response with the embed
 			msg.channel.fetchMessage(msgID)
 				.then(message => {
-					message.edit(message.channel.sendEmbed(embed, {disableEveryone: true}))})
+					message.edit(message.channel.send({embed}))})
 			.catch(console.error);
 		}
 
@@ -168,8 +168,8 @@ const stats = (msg, msgID) => {
                                                 + '\n\n**Time Played:** ' + compGmStats.time_played.toLocaleString() + ' hours'
                                                 + '\n**Record:** ' + compOvrStats.wins.toLocaleString() + '-' + compOvrStats.losses.toLocaleString() + '-' + compOvrStats.ties.toLocaleString()
                                                 + ' (' + compOvrStats.win_rate + '% Win Rate in ' + compOvrStats.games.toLocaleString() + ' games)'
-                                                + '\n\n**Voting Cards Earned:** ' + compGmStats.cards.toLocaleString()
-                                                + '\n**Medals Awarded:** ' + compGmStats.medals.toLocaleString()
+                                                + '\n\n**Voting Cards Earned:** ' + (compGmStats.cards ? compGmStats.cards.toLocaleString() : compGmStats.card ? compGmStats.card.toLocaleString() : '-')
+                                                + '\n**Medals Awarded:** ' + (compGmStats.medals ? compGmStats.medals.toLocaleString() : '-')
                                                 + ' (G: ' + compGmStats.medals_gold.toLocaleString() + ' S: ' + compGmStats.medals_silver.toLocaleString() +  ' B: ' + compGmStats.medals_bronze.toLocaleString() + ')'
                                                 )
 							 )
@@ -199,7 +199,7 @@ const stats = (msg, msgID) => {
                                 + '\n**Most: **' + (compGmStats.melee_final_blows_most_in_game ? compGmStats.melee_final_blows_most_in_game.toLocaleString() : compGmStats.melee_final_blow_most_in_game ? compGmStats.melee_final_blow_most_in_game.toLocaleString() : "-")
                                 + '\n**Total: **' + (compGmStats.melee_final_blows ? compGmStats.melee_final_blows.toLocaleString() : compGmStats.melee_final_blow ? compGmStats.melee_final_blow.toLocaleString() : "-")
 			, true)
-			.addField('__Objectives Kills__', '**Average: **' + (compGmStats.objective_kills ? (compGmStats.objective_kills / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+			.addField('__Objective Kills__', '**Average: **' + (compGmStats.objective_kills ? (compGmStats.objective_kills / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
                                 + '\n**Most: **' + (compGmStats.objective_kills_most_in_game ? compGmStats.objective_kills_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (compGmStats.objective_kills ? compGmStats.objective_kills.toLocaleString() : '-')
 			, true)
@@ -232,7 +232,7 @@ const stats = (msg, msgID) => {
 			// Edit the original response with the embed
 			msg.channel.fetchMessage(msgID)
 				.then(message => {
-					message.edit(message.channel.sendEmbed(embed, {disableEveryone: true}))})
+					message.edit(message.channel.send({embed}))})
 			.catch(console.error);
 	 }
 
