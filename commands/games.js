@@ -43,14 +43,14 @@ const games = msg => {
 					const gameTime = moment(game.start_time.split('T').pop().split('.').shift(), 'HH:mm:ss').format('h:mm A');
 
 					// Create message to display depending on number of spots left
-					var suffixText = ''
-					if ((game.team_size)- (game.primary_users_count) > 0){
+					let suffixText = ''
+					if ((game.team_size) - (game.primary_users_count) > 0){
 						suffixText = 'Join up now while there\'s still room!'
 					}
-					else{
+					else {
 						suffixText = 'Might as well join as a reserve in case someone doesn\'t show!'
 					}
-					
+
           // Create the embed for the game response
 					const embed = new Discord.RichEmbed()
 					  .setColor(0x00AE86)
@@ -68,7 +68,7 @@ const games = msg => {
 						  + '\n\nThere are currently ' + '**' +((game.team_size)- (game.primary_users_count)) + '**' + ' spots available.  ' + suffixText
 						  + '\n\nFor help converting to your local time: <http://www.worldtimebuddy.com/>')
 
-				 msg.channel.send({ embed });
+				 		msg.channel.send({ embed });
 
 				});
 			}
