@@ -128,6 +128,7 @@ const stats = (msg, msgID) => {
 		const competitiveData = parsedBody.us.stats.competitive;
 		const compGmStats = competitiveData.game_stats;
 		const compOvrStats = competitiveData.overall_stats;
+		const compAvgStats = competitiveData.average_stats;
 		const emptyObjectCompChecker = Object.getOwnPropertyNames(competitiveData);
 		if (emptyObjectCompChecker.length === 0 || emptyObjectCompChecker.length === 0) {
 			msg.channel.fetchMessage(msgID)
@@ -138,7 +139,7 @@ const stats = (msg, msgID) => {
 		}
 
 		// Make sure the user has played some games this comp Season.  Not sure if it would be null or 0 or ???  Taking a guess here
-		if (compOvrStats.games == null || compOvrStats.games == 0) {
+		if (compOvrStats.games == null || (compOvrStats.games == 0 && compGmStats.games == 0)) {
 			msg.channel.fetchMessage(msgID)
 				.then(message => {
 					message.edit("You need to play some games first.  Bibbity bobbity boo");
@@ -174,32 +175,32 @@ const stats = (msg, msgID) => {
                                                 )
 							 )
 
-			.addField('__Eliminations__', '**Average: **' + (compGmStats.eliminations ? (compGmStats.eliminations / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+			.addField('__Eliminations__', '**Average: **' + (compAvgStats.eliminations_avg ? compAvgStats.eliminations_avg.toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
                                 + ' (' + (compGmStats.kpd ? compGmStats.kpd.toLocaleString() : "-") + 'k/d)'
                                 + '\n**Most: **' + (compGmStats.eliminations_most_in_game ? compGmStats.eliminations_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (compGmStats.eliminations ? compGmStats.eliminations.toLocaleString() : '-')
 			,true)
-			.addField('__Damage__', '**Average: **' + (compGmStats.damage_done ? (compGmStats.damage_done / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 0}) : '-')
+			.addField('__Damage__', '**Average: **' + (compAvgStats.damage_done_avg ? compAvgStats.damage_done_avg.toLocaleString('en-US', {maximumFractionDigits: 0}) : '-')
                                 + '\n**Most: **' + (compGmStats.damage_done_most_in_game ? compGmStats.damage_done_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (compGmStats.damage_done ? compGmStats.damage_done.toLocaleString() : '-')
 			, true)
-			.addField('__Healing__', '**Average: **' + (compGmStats.healing_done ? (compGmStats.healing_done / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 0}) : '-')
+			.addField('__Healing__', '**Average: **' + (compAvgStats.healing_done_avg ? compAvgStats.healing_done_avg.toLocaleString('en-US', {maximumFractionDigits: 0}) : '-')
                                 + '\n**Most: **' + (compGmStats.healing_done_most_in_game ? compGmStats.healing_done_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (compGmStats.healing_done ? compGmStats.healing_done.toLocaleString() : '-')
 			, true)
-			.addField('__Solo Kills__', '**Average: **' + (compGmStats.solo_kills ? (compGmStats.solo_kills / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+			.addField('__Solo Kills__', '**Average: **' + (compAvgStats.solo_kills_avg ? compAvgStats.solo_kills_avg.toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
                                 + '\n**Most: **' + (compGmStats.solo_kills_most_in_game ? compGmStats.solo_kills_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (compGmStats.solo_kills ? compGmStats.solo_kills.toLocaleString() : '-')
 			,true)
-			.addField('__Final Blows__', '**Average: **' + (compGmStats.final_blows ? (compGmStats.final_blows / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+			.addField('__Final Blows__', '**Average: **' + (compAvgStats.final_blows_avg ? compAvgStats.final_blows_avg.toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
                                 + '\n**Most: **' + (compGmStats.final_blows_most_in_game ? compGmStats.final_blows_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (compGmStats.final_blows ? compGmStats.final_blows.toLocaleString() : '-')
 			, true)
-			.addField('__Melee Kills__', '**Average: **' + (compGmStats.melee_final_blows ? (compGmStats.melee_final_blows / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : compGmStats.melee_final_blow ? (compGmStats.melee_final_blow/ compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : "-")
+			.addField('__Melee Kills__', '**Average: **' + (compAvgStats.melee_final_blows_avg ? compAvgStats.melee_final_blows_avg.toLocaleString('en-US', {maximumFractionDigits: 2}) : compAvgStats.melee_final_blow_avg ? compAvgStats.melee_final_blow_avg.toLocaleString('en-US', {maximumFractionDigits: 2}) : "-")
                                 + '\n**Most: **' + (compGmStats.melee_final_blows_most_in_game ? compGmStats.melee_final_blows_most_in_game.toLocaleString() : compGmStats.melee_final_blow_most_in_game ? compGmStats.melee_final_blow_most_in_game.toLocaleString() : "-")
                                 + '\n**Total: **' + (compGmStats.melee_final_blows ? compGmStats.melee_final_blows.toLocaleString() : compGmStats.melee_final_blow ? compGmStats.melee_final_blow.toLocaleString() : "-")
 			, true)
-			.addField('__Objective Kills__', '**Average: **' + (compGmStats.objective_kills ? (compGmStats.objective_kills / compOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
+			.addField('__Objective Kills__', '**Average: **' + (compAvgStats.objective_kills_avg ? compAvgStats.objective_kills_avg.toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
                                 + '\n**Most: **' + (compGmStats.objective_kills_most_in_game ? compGmStats.objective_kills_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (compGmStats.objective_kills ? compGmStats.objective_kills.toLocaleString() : '-')
 			, true)
@@ -211,11 +212,11 @@ const stats = (msg, msgID) => {
                                 + '\n**Most: **' + (compGmStats.defensive_assists_most_in_game ? compGmStats.defensive_assists_most_in_game.toLocaleString() : '-')
                                 + '\n**Total: **' + (compGmStats.defensive_assists ? compGmStats.defensive_assists.toLocaleString() : '-')
 			, true)
-			.addField('__Objective Time__', '**Average: **' + (compGmStats.objective_time ? moment().startOf('day').seconds((compGmStats.objective_time / compOvrStats.games) * 3600).format('H:mm:ss') : '-')
+			.addField('__Objective Time__', '**Average: **' + (compAvgStats.objective_time_avg ? moment().startOf('day').seconds((compAvgStats.objective_time_avg) * 3600).format('H:mm:ss') : '-')
                                 + '\n**Most: **' + (compGmStats.objective_time_most_in_game ? moment().startOf('day').seconds(compGmStats.objective_time_most_in_game * 3600).format('H:mm:ss') : '-')
                                 + '\n**Total: **' + (compGmStats.objective_time ? moment().startOf('day').seconds(compGmStats.objective_time * 3600).format('H:mm:ss') : '-')
 			, true)
-			.addField('__Time on Fire__', '**Average: **' + (compGmStats.time_spent_on_fire ? moment().startOf('day').seconds((compGmStats.time_spent_on_fire / compOvrStats.games) * 3600).format('H:mm:ss') : '-')
+			.addField('__Time on Fire__', '**Average: **' + (compAvgStats.time_spent_on_fire_avg ? moment().startOf('day').seconds((compAvgStats.time_spent_on_fire_avg) * 3600).format('H:mm:ss') : '-')
                                 + '\n**Most: **' + (compGmStats.time_spent_on_fire_most_in_game ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire_most_in_game * 3600).format('H:mm:ss') : '-')
                                 + '\n**Total: **' + (compGmStats.time_spent_on_fire ? moment().startOf('day').seconds(compGmStats.time_spent_on_fire * 3600).format('H:mm:ss') : '-')
 			, true)
