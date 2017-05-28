@@ -1,5 +1,6 @@
 const request = require('request');
 const moment = require('moment');
+const Discord = require('discord.js')
 
 const authDetails = require('../auth.json');
 const the100GamesUrl = 'https://www.the100.io/api/v1/groups/3140/gaming_sessions';
@@ -40,20 +41,39 @@ const games = msg => {
 				games.forEach(game => {
 					const gameDate = game.start_time.split('T').shift();
 					const gameTime = moment(game.start_time.split('T').pop().split('.').shift(), 'HH:mm:ss').format('h:mm A');
-					msg.channel.sendMessage('**Game Creator:** ' + game.creator_gamertag +
-					'\n**Game Type:** ' + game.category +
-					'\n**Date:** ' + gameDate +
-					'\n**Time:** ' + gameTime + ' Pacific' +
-					'\n**Description:** ' + game.name +
-					'\n' +
-					'\nThere are currently ' + '**' +((game.team_size)-(game.primary_users_count)) + '**' + ' spots available' + ' ' +
-					'Game Url: ' + '<' + gameUrl+game.id + '>' +
-					'\nFor help converting to your local time: <http://www.worldtimebuddy.com/>' +
-					'\n================================================');
+
+					// Create message to display depending on number of spots left
+					let suffixText = ''
+					if ((game.team_size) - (game.primary_users_count) > 0){
+						suffixText = 'Join up now while there\'s still room!'
+					}
+					else {
+						suffixText = 'Might as well join as a reserve in case someone doesn\'t show!'
+					}
+
+          // Create the embed for the game response
+					const embed = new Discord.RichEmbed()
+					  .setColor(0x00AE86)
+						.setAuthor(game.creator_gamertag + '\'s Game')
+					  .setTimestamp()
+					  .setURL()
+					  .setFooter('© Brought to you by TurboJoe & Sucrizzle')
+						.addField('__Game Info__',(
+							'**Game Type:** ' + game.category
+							+ '\n**Date:** ' + gameDate
+							+ '\n**Time:** ' + gameTime + ' Pacific'
+							+ '\n**URL:** ' + gameUrl + game.id
+						))
+						.addField('__Description__', game.name
+						  + '\n\nThere are currently ' + '**' +((game.team_size)- (game.primary_users_count)) + '**' + ' spots available.  ' + suffixText
+						  + '\n\nFor help converting to your local time: <http://www.worldtimebuddy.com/>')
+
+				 		msg.channel.send({ embed });
+
 				});
 			}
 			else {
-				msg.channel.sendMessage("There are currently no games scheduled, but since you asked, that means you want to play. Go make one!! ***It's a perfect day for some mayhem!***");
+				msg.channel.send("There are currently no games scheduled, but since you asked, that means you want to play. Go make one!! ***It's a perfect day for some mayhem!***");
 			}
 		}
 		else {

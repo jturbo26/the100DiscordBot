@@ -19,14 +19,14 @@ const bot = new Discord.Client({autoReconnect: true});
 
 bot.on('ready', () => {
 	const botTestChannel = bot.channels.find('name', 'bottestchannel');
-	botTestChannel.sendMessage('Boo Boo Bee Doo... Omnic is ready to serve its CC337 Overlords!');
+	botTestChannel.send('Boo Boo Bee Doo... Omnic is ready to serve its CC337 Overlords!');
 	console.log(`Bot Online`);
 	bot.user.setGame('$bothelp');
 });
 
 bot.on('guildMemberAdd', guildMember => {
 	// Send a DM to the new user explaining our rules.
-	bot.users.get(guildMember.user.id).sendMessage(
+	bot.users.get(guildMember.user.id).send(
 		'', {embed: {
 			color: 65380,
 			description: `
@@ -61,24 +61,24 @@ bot.on('guildMemberAdd', guildMember => {
 	const coreChannel = guildMember.guild.channels.find('name', 'core_member_chat');
 	const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
 	// Post a message in general/core_member_chat/member_log notifying users of new member.
-	generalChannel.sendMessage(
+	generalChannel.send(
 		`
 	Hey everyone! We have a new member. Please welcome ${guildMember.user} to our group!
 ${guildMember.user} please check your Direct Messages for an important message from the
 CC337 moderators.
 		`
 	);
-	coreChannel.sendMessage(`Hey Core Members! We have a new member. Please be sure to welcome them and encourage them to participate!
+	coreChannel.send(`Hey Core Members! We have a new member. Please be sure to welcome them and encourage them to participate!
 		New Member = ${guildMember.user}`
 	);
-	memberLogChannel.sendMessage(`New Member = ${guildMember.user}`);
+	memberLogChannel.send(`New Member = ${guildMember.user}`);
 });
 
 // When a user is removed for any reason (kicked/left on own) displays a message in
 // member log channel to notify mods and keep track of who has left.
 bot.on('guildMemberRemove', guildMember => {
 	const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
-	memberLogChannel.sendMessage(`Member Left = ${guildMember.user}`);
+	memberLogChannel.send(`Member Left = ${guildMember.user}`);
 })
 
 // Handles commands
@@ -125,7 +125,7 @@ bot.on('message', msg => {
 
 		else if (msg.content.startsWith(prefix + 'botstats')) {
 			console.log('bot.user', bot.user);
-			msg.channel.sendMessage('', {embed: {
+			msg.channel.send('', {embed: {
 				color: 65380,
 				title: 'CC337 Bot Status',
 				url: 'https://github.com/jturbo26/the100DiscordBot',
@@ -163,7 +163,7 @@ bot.on('message', msg => {
 // to keep a log and notify bot admins.
 bot.on('disconnect', msg => {
 	const botTestChannel = bot.channels.find('name', 'bottestchannel');
-	botTestChannel.sendMessage('Bee Bee Boop ... Bot Disconnected');
+	botTestChannel.send('Bee Bee Boop ... Bot Disconnected');
 });
 
 
