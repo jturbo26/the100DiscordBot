@@ -10,6 +10,7 @@
     "discord.js": "v11.1.0",
     "moment": "^2.17.0",
     "moment-duration-format": "^1.3.0",
+    "mysql": "^2.13.0",
     "node-opus": "^0.2.4",
     "request": "^2.79.0"
   },
