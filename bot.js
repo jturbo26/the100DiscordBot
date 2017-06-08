@@ -2,7 +2,9 @@ const Discord = require('discord.js');
 const request = require('request');
 const moment = require('moment');
 const momentDuration = require("moment-duration-format");
+const mysql = require('mysql');
 
+const getConnectionRunQuery = require('./getConnectionRunQuery.js');
 const playingNow = require('./commands/playingnow.js');
 const games = require('./commands/games.js');
 const botHelp = require('./commands/bothelp.js');
@@ -16,6 +18,16 @@ const prefix = '$';
 const adminPrefix = '-';
 
 const bot = new Discord.Client({autoReconnect: true});
+
+const dbConnectionPool = mysql.createPool({
+  connectionLimit: 10,
+  host: 'localhost',
+  user: 'bot',
+  password: authDetails.dbPassword,
+  database: '337bot_db'
+});
+
+//getConnectionRunQuery(dbConnectionPool);
 
 bot.on('ready', () => {
 	const botTestChannel = bot.channels.find('name', 'bottestchannel');
@@ -93,6 +105,7 @@ bot.on('message', msg => {
 		//$games
 		else if (msg.content.startsWith(prefix + 'games')) {
 			games(msg);
+      getConnectionRunQuery(dbConnectionPool, 'games');
 		}
 
 		else if (msg.content.startsWith(prefix + 'test')) {
@@ -156,6 +169,11 @@ bot.on('message', msg => {
 		else if (msg.content.startsWith(prefix + 'popcorn')) {
 			popcornGif(msg);
 		}
+
+    // $dbtest
+    else if (msg.content.startsWith(prefix + 'dbtest')) {
+      getConnectionRunQuery(dbConnectionPool, 'increaseCount');
+    }
 	}
 });
 
