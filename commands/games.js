@@ -45,6 +45,14 @@ const games = msg => {
 					const futureGameTime = moment(game.start_time);
 					const diff = moment(futureGameTime.diff(now, 'hours'));
 
+					let hoursText = ''
+					if (diff == 0) {
+						hoursText = ' - In less than an hour';
+					}
+					else {
+						hoursText = ' Pacific, in about ' + diff + ' hours(s)!'
+					}
+
 					// Create message to display depending on number of spots left
 					let suffixText = ''
 					if ((game.team_size) - (game.primary_users_count) > 0){
@@ -64,7 +72,7 @@ const games = msg => {
 						.addField('__Game Info__',(
 							'**Game Type:** ' + game.category
 							+ '\n**Date:** ' + gameDate
-							+ '\n**Time:** ' + gameTime + ' Pacific, in about ' + diff + ' hour(s)!'
+							+ '\n**Time:** ' + gameTime + hoursText
 							+ '\n**URL:** ' + gameUrl + game.id
 						))
 						.addField('__Description__', game.name
