@@ -15,7 +15,7 @@ const getConnectionRunQuery = (dbConnectionPool, whatQuery, options) => {
 
 			case 'setBattleTag':
 				const escapedBattleTagData = {
-					MemberID: options.uuid,
+					MemberID: '1234',
 					DiscordID: options.discordId,
 					DiscordNickname: null,
 					DateAdded: new Date(),
