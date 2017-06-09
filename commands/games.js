@@ -20,7 +20,7 @@ const todaysDate = () => {
 		return day < 10 ? '0' + day : '' + day;
 	};
 	const getMonth = () => {
-		const month = moment().get('month')+1;
+		const month = moment().get('month') + 1;
 		return month < 10 ? '0' + month : '' + month;
 	};
 	const year = moment().get('year');
@@ -41,6 +41,9 @@ const games = msg => {
 				games.forEach(game => {
 					const gameDate = game.start_time.split('T').shift();
 					const gameTime = moment(game.start_time.split('T').pop().split('.').shift(), 'HH:mm:ss').format('h:mm A');
+					const now = moment(new Date());
+					const futureGameTime = moment(game.start_time);
+					const diff = moment(futureGameTime.diff(now, 'hours'));
 
 					// Create message to display depending on number of spots left
 					let suffixText = ''
@@ -61,7 +64,7 @@ const games = msg => {
 						.addField('__Game Info__',(
 							'**Game Type:** ' + game.category
 							+ '\n**Date:** ' + gameDate
-							+ '\n**Time:** ' + gameTime + ' Pacific'
+							+ '\n**Time:** ' + gameTime + ' Pacific, in about ' + diff + ' hour(s)!'
 							+ '\n**URL:** ' + gameUrl + game.id
 						))
 						.addField('__Description__', game.name
