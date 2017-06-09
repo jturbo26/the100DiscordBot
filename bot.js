@@ -21,11 +21,11 @@ const adminPrefix = '-';
 const bot = new Discord.Client({autoReconnect: true});
 
 const dbConnectionPool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: authDetails.dbPassword,
-  database: '337bot_db'
+	connectionLimit: 10,
+	host: 'localhost',
+	user: 'root',
+	password: authDetails.dbPassword,
+	database: '337bot_db'
 });
 
 bot.on('ready', () => {
@@ -104,7 +104,7 @@ bot.on('message', msg => {
 		//$games
 		else if (msg.content.startsWith(prefix + 'games')) {
 			games(msg);
-      getConnectionRunQuery(dbConnectionPool, 'games');
+			getConnectionRunQuery(dbConnectionPool, 'games');
 		}
 
 		else if (msg.content.startsWith(prefix + 'test')) {
@@ -174,10 +174,10 @@ bot.on('message', msg => {
 			setBattleTag(msg, dbConnectionPool);
 		}
 
-    // $setDb
-    else if (msg.content.startsWith(prefix + 'setDb')) {
-      getConnectionRunQuery(dbConnectionPool, 'setDb');
-    }
+		// $setDb
+		else if (msg.content.startsWith(prefix + 'setDb')) {
+			getConnectionRunQuery(dbConnectionPool, 'setDb');
+		}
 	}
 });
 
