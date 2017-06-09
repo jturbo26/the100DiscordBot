@@ -13,23 +13,23 @@ const getConnectionRunQuery = (dbConnectionPool, whatQuery, options) => {
 				});
 				break;
 
-				case 'setBattleTag':
-					const escapedBattleTagData = {
-						MemberID: options.uuid,
-						DiscordID: options.discordId,
-						DiscordNickname: null,
-						DateAdded: new Date(),
-						BattleTagID: options.battleTag
-					};
-					console.log(options);
-					dbConnectionPool.getConnection((err, connection) => {
-						connection.query('INSERT INTO Members SET ?', escapedBattleTagData, (error, results, fields) => {
-							if (error) throw error;
-							console.log(error, results);
-						});
-						connection.release();
+			case 'setBattleTag':
+				const escapedBattleTagData = {
+					MemberID: options.uuid,
+					DiscordID: options.discordId,
+					DiscordNickname: null,
+					DateAdded: new Date(),
+					BattleTagID: options.battleTag
+				};
+				console.log(options);
+				dbConnectionPool.getConnection((err, connection) => {
+					connection.query('INSERT INTO Members SET ?', escapedBattleTagData, (error, results, fields) => {
+						if (error) throw error;
+						console.log(error, results);
 					});
-					break;
+					connection.release();
+				});
+				break;
 	}
 
 };

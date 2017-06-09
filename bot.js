@@ -104,7 +104,6 @@ bot.on('message', msg => {
 		//$games
 		else if (msg.content.startsWith(prefix + 'games')) {
 			games(msg);
-			getConnectionRunQuery(dbConnectionPool, 'games');
 		}
 
 		else if (msg.content.startsWith(prefix + 'test')) {
