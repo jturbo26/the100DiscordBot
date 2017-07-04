@@ -60,7 +60,9 @@ const stats = (msg, msgID) => {
                                                 + ' (' + QPOvrStats.win_rate + '% Win Rate in ' + QPOvrStats.games.toLocaleString() + ' games)'
                                                 + '\n\n**Voting Cards Earned:** ' + (QPGmStats.cards ? QPGmStats.cards.toLocaleString() : QPGmStats.card ? QPGmStats.card.toLocaleString() : '-')
                                                 + '\n**Medals Awarded:** ' + (QPGmStats.medals ? QPGmStats.medals.toLocaleString() : '-')
-                                                + ' (G: ' + QPGmStats.medals_gold.toLocaleString() + ' S: ' + QPGmStats.medals_silver.toLocaleString() +  ' B: ' + QPGmStats.medals_bronze.toLocaleString() + ')'
+                                                + ' (G: ' + QPGmStats.medals_gold ? QPGmStats.medals_gold.toLocaleString() : '-'
+																								+ ' S: ' + QPGmStats.medals_silver ? QPGmStats.medals_silver.toLocaleString() : '-'
+																								+ ' B: ' + QPGmStats.medals_bronze ? QPGmStats.medals_bronze.toLocaleString() : '-' + ')'
 																							  )
 							 )
 			.addField('__Eliminations__', '**Average: **' + (QPGmStats.eliminations ? (QPGmStats.eliminations / QPOvrStats.games).toLocaleString('en-US', {maximumFractionDigits: 2}) : '-')
@@ -171,7 +173,9 @@ const stats = (msg, msgID) => {
                                                 + ' (' + compOvrStats.win_rate + '% Win Rate in ' + compOvrStats.games.toLocaleString() + ' games)'
                                                 + '\n\n**Voting Cards Earned:** ' + (compGmStats.cards ? compGmStats.cards.toLocaleString() : compGmStats.card ? compGmStats.card.toLocaleString() : '-')
                                                 + '\n**Medals Awarded:** ' + (compGmStats.medals ? compGmStats.medals.toLocaleString() : '-')
-                                                + ' (G: ' + compGmStats.medals_gold.toLocaleString() + ' S: ' + compGmStats.medals_silver.toLocaleString() +  ' B: ' + compGmStats.medals_bronze.toLocaleString() + ')'
+                                                + ' (G: ' + (compGmStats.medals_gold ? compGmStats.medals_gold.toLocaleString() : '-')
+																								+ ' S: ' + (compGmStats.medals_silver ? compGmStats.medals_silver.toLocaleString() : '-')
+																								+ ' B: ' + (compGmStats.medals_bronze ? compGmStats.medals_bronze.toLocaleString() : '-') + ')'
                                                 )
 							 )
 
