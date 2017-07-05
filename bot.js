@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const request = require('request');
 const moment = require('moment');
 const momentDuration = require("moment-duration-format");
+const mysql = require("mysql");
+const getConnectionRunQuery = require('./utils/getConnectionRunQuery.js');
 
 const playingNow = require('./commands/playingnow.js');
 const games = require('./commands/games.js');
@@ -9,6 +11,8 @@ const botHelp = require('./commands/bothelp.js');
 const userStatus = require('./commands/users.js');
 const stats = require('./commands/stats.js');
 const popcornGif = require('./commands/popcornGif.js');
+const setBattleTag = require('./commands/setBattleTag.js');
+const getBattleTag = require('./commands/getBattleTag.js');
 
 const authDetails = require('./auth.json');
 
@@ -16,6 +20,15 @@ const prefix = '$';
 const adminPrefix = '-';
 
 const bot = new Discord.Client({autoReconnect: true});
+
+const dbConnectionPool = mysql.createPool({
+	connectionLimit: 10,
+	host: 'localhost',
+	user: 'bot',
+	password: authDetails.dbPassword,
+	database: '337bot_db_test',
+	multipleStatements: true
+});
 
 bot.on('ready', () => {
 	const botTestChannel = bot.channels.find('name', 'bottestchannel');
@@ -112,7 +125,7 @@ bot.on('message', msg => {
 				msg.reply("Working on your request.")
 					.then(message => {
 						const msgID = message.id;
-						stats(msg, msgID);
+						stats(msg, msgID, dbConnectionPool);
 					})
 					.catch(console.error);
 
@@ -150,6 +163,15 @@ bot.on('message', msg => {
 		// $my100status
 		else if (msg.content.startsWith(prefix + 'my100status')) {
 			userStatus(msg);
+		}
+
+    // BattleTag Registration
+		else if (msg.content.startsWith(prefix + 'setbattletag')) {
+			setBattleTag(msg, dbConnectionPool);
+		}
+
+		else if (msg.content.startsWith(prefix + 'getbattletag')) {
+			getBattleTag(msg, dbConnectionPool);
 		}
 
 		// $popcorn TODO: repalce this with any gif with command $gif 'string'
