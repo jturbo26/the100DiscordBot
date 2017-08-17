@@ -23,13 +23,13 @@ const playingNow = msg => {
 	const getGroupStatuses = (error, response, body) => {
 		if (!error && response.statusCode == 200) {
 			const info = JSON.parse(body);
-			if(info.length > 0) {
+			if (info.length > 0) {
 				info.forEach(userGamerInfo => {
-					if(userGamerInfo.category === '#willsherpa') {
+					if (userGamerInfo.category === '#willsherpa') {
 						msg.reply(userGamerInfo.gamertag + botResponses.isPlaying +
 						botResponses.willSherpa);
 					}
-					else if(userGamerInfo.category === '#joinme') {
+					else if (userGamerInfo.category === '#joinme') {
 						msg.reply(userGamerInfo.gamertag + botResponses.isPlaying +
 						botResponses.joinMe);
 					}

@@ -37,7 +37,7 @@ const games = msg => {
 				const gameDate = game.start_time.split('T').shift();
 				return gameDate === today;
 			});
-			if(games.length != 0) {
+			if (games.length != 0) {
 				games.forEach(game => {
 					const gameDate = game.start_time.split('T').shift();
 					const gameTime = moment(game.start_time.split('T').pop().split('.').shift(), 'HH:mm:ss').format('h:mm A');
@@ -62,13 +62,13 @@ const games = msg => {
 						suffixText = 'Might as well join as a reserve in case someone doesn\'t show!'
 					}
 
-          // Create the embed for the game response
+					// Create the embed for the game response
 					const embed = new Discord.RichEmbed()
-					  .setColor(0x00AE86)
+						.setColor(0x00AE86)
 						.setAuthor(game.creator_gamertag + '\'s ' + game.game_name + ' Game')
-					  .setTimestamp()
-					  .setURL()
-					  .setFooter('© Brought to you by TurboJoe & Sucrizzle')
+						.setTimestamp()
+						.setURL()
+						.setFooter('© Brought to you by TurboJoe & Sucrizzle')
 						.addField('__Game Info__',(
 							'**Game Type:** ' + game.category
 							+ '\n**Date:** ' + gameDate
@@ -76,10 +76,10 @@ const games = msg => {
 							+ '\n**URL:** ' + gameUrl + game.id
 						))
 						.addField('__Description__', game.name
-						  + '\n\nThere are currently ' + '**' +((game.team_size)- (game.primary_users_count)) + '**' + ' spots available.  ' + suffixText
-						  + '\n\nFor help converting to your local time: <http://www.worldtimebuddy.com/>')
+							+ '\n\nThere are currently ' + '**' +((game.team_size)- (game.primary_users_count)) + '**' + ' spots available.  ' + suffixText
+							+ '\n\nFor help converting to your local time: <http://www.worldtimebuddy.com/>')
 
-				 		msg.channel.send({ embed });
+						msg.channel.send({ embed });
 
 				});
 			}

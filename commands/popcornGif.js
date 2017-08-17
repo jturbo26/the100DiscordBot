@@ -8,7 +8,7 @@ const getRandomNumber = (min, max) => {
 
 const popcornGif = msg => {
 	const getGif = (error, response, body) => {
-		if(!error && response.statusCode === 200) {
+		if (!error && response.statusCode === 200) {
 			const jsonResponse = JSON.parse(body);
 			const responseRandomNumber = getRandomNumber(0,23);
 			msg.channel.send(jsonResponse.data[responseRandomNumber].url);
