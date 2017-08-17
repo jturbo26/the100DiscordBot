@@ -65,7 +65,7 @@ const games = msg => {
           // Create the embed for the game response
 					const embed = new Discord.RichEmbed()
 					  .setColor(0x00AE86)
-						.setAuthor(game.creator_gamertag + '\'s Game')
+						.setAuthor(game.creator_gamertag + '\'s ' + game.game_name + ' Game')
 					  .setTimestamp()
 					  .setURL()
 					  .setFooter('© Brought to you by TurboJoe & Sucrizzle')
