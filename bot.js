@@ -30,23 +30,22 @@ bot.on('guildMemberAdd', guildMember => {
 		'', {embed: {
 			color: 65380,
 			description: `
-	${guildMember.user} welcome to ***Charlie Company 337***. We are a super casual, mostly
-	Overwatch related gaming group that has a ton of fun together. We're very active here
+	${guildMember.user} welcome to ***Charlie Company 337***. We are a super casual
+	gaming group that has a ton of fun together. We're very active here
 	in Discord, have games going every night and group events throughout the month.
 
 	__There are a few things you should do to be successful in our group:__
 
 	1. If you haven't already, join our group on the100. This is where we schedule
 		our games. You can still do PUGs in Discord, but this is the core of our group.
-		https://www.the100.io/g/3140?r=205541
+		https://www.the100.io/g/3140
 
-	2. Be sure to right-click your name in Discord and select "Change Nickname". Please
-		set this to match your battlenet ID including the #1234 at the end. This allows
-		game organizers to easily add you.
+	2. Be sure to right-click your name in Discord and select "Change Nickname". If
+		your main game is a blizzard game use your BattlenetId. If it's a Steam game like
+		PUBG please change your nickname to match your Steam name and format like this: "Username (Steam)"
 
-	3. Head over to ${bot.channels.find('name', 'introductions')} and take a moment to tell us about yourself. How
-		long have you been playing OW? Who's your favorite hero? Do you play any other
-		games?
+	3. Head over to ${bot.channels.find('name', 'introductions')} and take a moment to tell us about yourself. What
+		games do you play? What else do you like to do? Feel free to just say hi. We're a welcoming group.
 
 	4. Check out ${bot.channels.find('name', 'use_enslaved_omnics_here')} and use the $games command to see what's on the schedule.
 
