@@ -2,13 +2,16 @@ const Discord = require('discord.js');
 const request = require('request');
 const moment = require('moment');
 const momentDuration = require("moment-duration-format");
+const mysql = require('mysql');
 
+const getConnectionRunQuery = require('./utils/getConnectionRunQuery.js');
 const playingNow = require('./commands/playingnow.js');
 const games = require('./commands/games.js');
 const botHelp = require('./commands/bothelp.js');
 const userStatus = require('./commands/users.js');
 const stats = require('./commands/stats.js');
 const popcornGif = require('./commands/popcornGif.js');
+const setBattleTag = require('./commands/setBattleTag.js');
 
 const authDetails = require('./auth.json');
 
@@ -16,6 +19,14 @@ const prefix = '$';
 const adminPrefix = '-';
 
 const bot = new Discord.Client({autoReconnect: true});
+
+const dbConnectionPool = mysql.createPool({
+	connectionLimit: 10,
+	host: 'localhost',
+	user: 'root',
+	password: authDetails.dbPassword,
+	database: '337bot_db'
+});
 
 bot.on('ready', () => {
 	const botTestChannel = bot.channels.find('name', 'bottestchannel');
@@ -154,6 +165,16 @@ bot.on('message', msg => {
 		// $popcorn TODO: repalce this with any gif with command $gif 'string'
 		else if (msg.content.startsWith(prefix + 'popcorn')) {
 			popcornGif(msg);
+		}
+
+		//setbattletag
+		else if (msg.content.startsWith(prefix + 'setbattletag')) {
+			setBattleTag(msg, dbConnectionPool);
+		}
+
+		// $setDb
+		else if (msg.content.startsWith(prefix + 'setDb')) {
+			getConnectionRunQuery(dbConnectionPool, 'setDb');
 		}
 	}
 });
