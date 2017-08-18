@@ -90,7 +90,7 @@ bot.on('guildMemberRemove', guildMember => {
 })
 
 // Handles commands
-bot.on('message', (msg, guildMember) => {
+bot.on('message', msg => {
 	// Only respond to commands that start with prefix
 	if (msg.content.startsWith(prefix)) {
 		// $playingnow
