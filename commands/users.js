@@ -20,7 +20,7 @@ const userStatus = msg => {
 				return gamer.gamertag.toLowerCase() == lcUserName;
 			});
 			const gamer = requestedUser[0];
-			if(gamer === undefined) {
+			if (gamer === undefined) {
 				msg.reply(msg, 'Sorry, no user was found by that name. Please try again with a different username.');
 			}
 			else {
