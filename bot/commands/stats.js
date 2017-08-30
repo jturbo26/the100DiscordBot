@@ -4,14 +4,14 @@ const Discord = require('discord.js')
 
 const apiV3UrlRoot = 'https://owapi.net/api/v3';
 
-const stats = (msg, msgID) =>
+const stats = (msg, msgID, userName, statType) =>
 {
-    const msgStatsContent = msg.content.slice(7);
-    const msgCompStatsContent = msg.content.slice(11);
-    const msgAvgStatsContent = msg.content.slice(10);
-    const contentReplacePoundStats = msgStatsContent.replace('#', '-');
-    const contentReplacePoundCompStats = msgCompStatsContent.replace('#', '-');
-    const contentReplacePoundAvgStats = msgAvgStatsContent.replace('#', '-');
+    const msgStatsContent = userName;
+    const msgCompStatsContent = userName;
+    const msgAvgStatsContent = userName;
+    const contentReplacePoundStats = userName.replace('#', '-');
+    const contentReplacePoundCompStats = userName.replace('#', '-');
+    const contentReplacePoundAvgStats = userName.replace('#', '-');
 
     const urls =
     {
@@ -54,7 +54,7 @@ const stats = (msg, msgID) =>
             msg.channel.fetchMessage(msgID)
                 .then(message =>
                 {
-                    message.edit("Sorry. This user has missing data. Boo boo doo de doo.");
+                    message.edit('Sorry. This user has missing data. Boo boo doo de doo.');
                 });
             return;
         }
@@ -151,7 +151,7 @@ const stats = (msg, msgID) =>
             msg.channel.fetchMessage(msgID)
                 .then(message =>
                 {
-                    message.edit("Sorry. This user has missing data. Boo boo doo de doo.");
+                    message.edit('Sorry. This user has missing data. Boo boo doo de doo.');
                 });
             return;
         }
@@ -162,12 +162,13 @@ const stats = (msg, msgID) =>
             msg.channel.fetchMessage(msgID)
                 .then(message =>
                 {
-                    message.edit("You need to play some games first.  Bibbity bobbity boo");
+                    message.edit('You need to play some games first.  Bibbity bobbity boo');
                 });
             return;
         }
         // Build links to the comp icons
-        const compIconDict = {
+        const compIconDict =
+        {
             'bronze': 'http://vignette4.wikia.nocookie.net/overwatch/images/8/8f/Competitive_Bronze_Icon.png',
             'silver': 'http://vignette4.wikia.nocookie.net/overwatch/images/f/fe/Competitive_Silver_Icon.png',
             'gold': 'http://vignette3.wikia.nocookie.net/overwatch/images/4/44/Competitive_Gold_Icon.png',
@@ -261,7 +262,7 @@ const stats = (msg, msgID) =>
             .catch(console.error);
     }
 
-    lookupCorrectFn = fn => (error, response, body) =>
+    lookupCorrectFn = (fn) => (error, response, body) =>
     {
         //Let user know that the bot is working on the request
         const parsedBody = JSON.parse(body);
@@ -282,7 +283,7 @@ const stats = (msg, msgID) =>
             msg.channel.fetchMessage(msgID)
                 .then(message =>
                 {
-                    message.edit("Bwa Bwa Bwa Bwa. There is an issue with the Overwatch API. Try again later.");
+                    message.edit('Bwa Bwa Bwa Bwa. There is an issue with the Overwatch API. Try again later.');
                 })
         }
         else
@@ -290,25 +291,67 @@ const stats = (msg, msgID) =>
             msg.channel.fetchMessage(msgID)
                 .then(message =>
                 {
-                    message.edit("Bweeeeeeeeeeeoh. There was an error finding that user. Usernames are case sensitive. Try again.");
+                    message.edit('Bweeeeeeeeeeeoh. There was an error finding that user. Usernames are case sensitive. Try again.');
                 })
                 .catch(console.error);
         }
     }
 
-    if (msg.content.startsWith('$stats'))
+    if (statType !== undefined)
     {
-        request(urls.statsOptions, lookupCorrectFn(getUserStats));
-    }
-    else if (msg.content.startsWith('$compstats'))
-    {
-        request(urls.compStatsOptions, lookupCorrectFn(getCompUserStats));
-    }
-    else if (msg.content.startsWith('$avgstats'))
-    {
-        request(urls.avgStatsOptions, lookupCorrectFn(getAvgUserStats));
-    }
+        statType = statType.toLowerCase();
 
+        if ((statType === 'quickplay') || (statType === 'qp'))
+        {
+            request(urls.statsOptions, lookupCorrectFn(getUserStats));
+        }
+        else if ((statType === 'competitive') || (statType === 'comp'))
+        {
+            request(urls.compStatsOptions, lookupCorrectFn(getCompUserStats));
+        }
+        else
+        {
+            msg.channel.fetchMessage(msgID)
+            .then(message =>
+            {
+                message.edit
+                ({
+                    embed:
+                    {
+                        color: 0xFF0000,
+                        fields:
+                        [
+                            {
+                                name: '[Mode] ' + statType + ' not found',
+                                value: '```yaml\n' + `Type "$help stats" to display a list of available parameters` + '```'
+                            }
+                        ]
+                    }
+                });
+            })
+        }
+    }
+    else
+    {
+        msg.channel.fetchMessage(msgID)
+        .then(message =>
+        {
+            message.edit
+            ({
+                embed:
+                {
+                    color: 0xFF0000,
+                    fields:
+                    [
+                        {
+                            name: '[Mode] Please define a game mode',
+                            value: '```yaml\n' + `Type "$help stats" to display a list of available parameters` + '```'
+                        }
+                    ]
+                }
+            });
+        })  
+    }
 }
 
 module.exports = stats;

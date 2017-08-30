@@ -2,11 +2,9 @@ const request = require('request');
 const authDetails = require('../../auth.json');
 const the100UserUrl = 'https://www.the100.io/api/v1/groups/3140/users?page=all';
 
-const my100status = msg =>
+const my100status = (msg, userName) =>
 {
-    const userName = msg.content.split(' ').pop();
-
-    const lcUserName = userName.toLowerCase();
+    userName = userName.toLowerCase();
 
     const userAuthOptions =
     {
@@ -25,7 +23,7 @@ const my100status = msg =>
 
             const requestedUser = usersJson.filter(gamer =>
             {
-				return gamer.gamertag.toLowerCase() == lcUserName;
+				return gamer.gamertag.toLowerCase() == userName;
 			});
 
             const gamer = requestedUser[0];
@@ -38,10 +36,6 @@ const my100status = msg =>
             {
                 msg.reply(gamer.gamertag + ' has ' + gamer.activity_score + ' activity points and ' + gamer.karmas_count + ' karma on the site!');
 			}
-		}
-        else
-        {
-            // An error has occured
 		}
     };
 

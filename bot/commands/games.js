@@ -18,7 +18,7 @@ const gamesAuthOptions =
 
 const todaysDate = () =>
 {
-    var date = moment(new Date(), 'YYYY-MM-DD');
+    const date = moment(new Date(), 'YYYY-MM-DD');
 
     const getDay = () =>
     {
@@ -34,7 +34,7 @@ const todaysDate = () =>
     return year + '-' + getMonth() + '-' + getDay();
 };
 
-const games = msg =>
+const games = (msg) =>
 {
     const getGames = (error, response, body) =>
     {
@@ -88,7 +88,7 @@ const games = msg =>
                                     name: 'Charlie Company 337 Game List',
                                     value: messages.format
                                     (
-                                        "games.txt",
+                                        'games.txt',
                                         game.creator_gamertag,
                                         game.game_name,
                                         game.category,
@@ -107,12 +107,12 @@ const games = msg =>
             }
             else
             {
-                msg.channel.send("There are currently no games scheduled, but since you asked, that means you want to play. Go make one!! ***It's a perfect day for some mayhem!***");
+                msg.channel.send('There are currently no games scheduled, but since you asked, that means you want to play. Go make one!! ***It\'s a perfect day for some mayhem!***');
             }
         }
         else
         {
-            console.log("Sorry there was an error!");
+            console.log('Sorry there was an error!');
         }
     };
     request(gamesAuthOptions, getGames);

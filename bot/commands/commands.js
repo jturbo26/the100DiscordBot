@@ -12,7 +12,7 @@ const commands = (msg) =>
                     name: 'The CC337 Bot\'s Command List',
                     value: messages.format
                     (
-                        "commands.txt"
+                        'commands.txt'
                     )
                 }
             ]

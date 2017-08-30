@@ -2,10 +2,10 @@ const messages = require('../../messages/format.js');
 
 const test = (bot, msg) =>
 {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; // January is 0
-    var yyyy = today.getFullYear();
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth() + 1; // January is 0
+    const yyyy = today.getFullYear();
 
     if (dd < 10)
     {
@@ -19,7 +19,7 @@ const test = (bot, msg) =>
 
     today = mm + '/' + dd + '/' + yyyy;
 
-    msg.reply(messages.format("test.txt", today));
+    msg.reply(messages.format('test.txt', today));
 }
 
 module.exports = test;

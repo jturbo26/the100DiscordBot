@@ -21,7 +21,7 @@ const botResponses =
     signup: 'You can be the first though! Head over to the100.io and set your status so others know you want to group up!'
 };
 
-const playingnow = msg =>
+const playingnow = (msg) =>
 {
     const getGroupStatuses = (error, response, body) =>
     {

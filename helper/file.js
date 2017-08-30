@@ -1,9 +1,8 @@
-var fs = require('fs');
+const fs = require('fs');
 
-module.exports =
+const read = (filePath) =>
 {
-    read: function (filePath)
-    {
-        return fs.readFileSync(filePath, 'utf8');
-    }
-};
+    return fs.readFileSync(filePath, 'utf8');
+}
+
+module.exports.read = read;

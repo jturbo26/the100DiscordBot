@@ -1,5 +1,5 @@
 const moment = require('moment');
-const momentDuration = require("moment-duration-format");
+const momentDuration = require('moment-duration-format');
 
 const help = (msg, command, description, usage, parameters) =>
 {

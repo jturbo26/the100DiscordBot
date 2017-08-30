@@ -7,7 +7,7 @@ const getRandomNumber = (min, max) =>
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-const popcorn = msg =>
+const popcorn = (msg) =>
 {
     const getGif = (error, response, body) =>
     {
