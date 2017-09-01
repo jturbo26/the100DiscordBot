@@ -37,7 +37,6 @@ bot.on('guildMemberAdd', guildMember => {
 			Welcome to ***Charlie Company 337***. We are a super casual
 			gaming group that has a ton of fun together. We're very active here
 			in Discord, have games going every night and group events throughout the month.
-
 			__There are a few things you should do to be successful in our group:__
 
 			1. If you haven't already, join our group on the100. This is where we schedule
@@ -62,7 +61,7 @@ bot.on('guildMemberAdd', guildMember => {
 			`
 		}}
 	);
-	const generalChannel = guildMember.guild.channels.find('name', 'general----------');
+	const generalChannel = guildMember.guild.channels.find('name', 'l---------overwatch---------l');
 	const coreChannel = guildMember.guild.channels.find('name', 'core_member_chat');
 	const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
 
