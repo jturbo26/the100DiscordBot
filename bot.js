@@ -61,7 +61,7 @@ bot.on('guildMemberAdd', guildMember => {
 			`
 		}}
 	);
-	const generalChannel = guildMember.guild.channels.find('name', 'l---------overwatch---------l');
+	const generalChannel = guildMember.guild.channels.find('name', 'l-----------general-----------l');
 	const coreChannel = guildMember.guild.channels.find('name', 'core_member_chat');
 	const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
 
