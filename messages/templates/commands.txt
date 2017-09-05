@@ -5,7 +5,7 @@ $my100stats [BattleTag]
 $my100status [BattleTag]
 $playingnow
 $popcorn
-$stats [BattleTag]
+$stats [Mode] [BattleTag]
 
 To get further details about each command you can type $help followed by the command name.
 
