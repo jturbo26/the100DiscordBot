@@ -1,0 +1,12 @@
+$commands
+$games
+$help [Command]
+$my100stats [BattleTag]
+$my100status [BattleTag]
+$playingnow
+$popcorn
+$stats [BattleTag]
+
+To get further details about each command you can type $help followed by the command name.
+
+*Brought to you by TurboJoe, Sucrizzle & Macer*
