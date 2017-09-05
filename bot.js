@@ -56,7 +56,7 @@ bot.on('guildMemberAdd', (guildMember) =>
         }
     });
 
-    const generalChannel = guildMember.guild.channels.find('name', 'general');
+    const generalChannel = guildMember.guild.channels.find('name', 'l-----------general-----------l');
 
     const coreChannel = guildMember.guild.channels.find('name', 'core_member_chat');
 
