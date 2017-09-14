@@ -58,11 +58,11 @@ bot.on('guildMemberAdd', (guildMember) =>
 
     const generalChannel = guildMember.guild.channels.find('name', 'l-----------general-----------l');
 
-    const coreChannel = guildMember.guild.channels.find('name', 'core_member_chat');
+    const coreChannel = guildMember.guild.channels.find('name', 'secret_noble_knight_chat');
 
     const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
 
-    // Post a message in general/core_member_chat/member_log notifying users of new member.
+    // Post a message in general/secret_noble_knight_chat/member_log notifying users of new member.
     generalChannel.send(`Hey everyone! We have a new member. Please welcome ${guildMember.user} to our group! ${guildMember.user} please check your Direct Messages for an important message from the CC337 moderators.`);
 
     coreChannel.send(`Hey Core Members! We have a new member. Please be sure to welcome them and encourage them to participate! New Member = ${guildMember.user}`);
