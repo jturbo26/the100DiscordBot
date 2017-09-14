@@ -10,7 +10,9 @@ URL: <$[6]$[7]>
 
 __Description__
 
-There are currently $[8] spots available. Join up now while there's still room!
+$[8]
+
+There are currently $[9] spots available. Join up now while there's still room!
 
 For help converting to your local time: http://www.worldtimebuddy.com/
 

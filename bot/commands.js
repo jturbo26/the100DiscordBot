@@ -9,7 +9,7 @@ const stats = require('./commands/stats.js');
 const test = require('./commands/test.js');
 
 // Command Prefixes
-const adminPrefix = '-';
+const adminPrefix = '*';
 const userPrefix = '$';
 
 const testbotjoe26Tag = 'testbotjoe26#8213';

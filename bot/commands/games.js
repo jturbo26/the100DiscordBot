@@ -97,6 +97,7 @@ const games = (msg) =>
                                         hoursText,
                                         gameUrl,
                                         game.id,
+                                        game.name,
                                         (game.team_size - game.primary_users_count)
                                     )
                                 }
