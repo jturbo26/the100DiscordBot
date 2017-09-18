@@ -9,7 +9,6 @@ const stats = require('./commands/stats.js');
 const test = require('./commands/test.js');
 
 // Command Prefixes
-const adminPrefix = '*';
 const userPrefix = '$';
 
 const testbotjoe26Tag = 'testbotjoe26#8213';
@@ -241,7 +240,7 @@ const execute = (bot, msg, command, parameters) =>
 
 const process = (bot, msg) =>
 {
-    if (msg.content.startsWith(userPrefix) || msg.content.startsWith(adminPrefix))
+    if (msg.content.startsWith(userPrefix))
     {
         var data;
 
