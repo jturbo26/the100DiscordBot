@@ -29,21 +29,19 @@ bot.on('guildMemberAdd', (guildMember) =>
         embed:
         {
             color: 65380,
-            description: `Welcome to **Charlie Company 337**! We are a super casual gaming group that has a ton of fun together. We're very active here in Discord, have games going every night and group events throughout the month.
+            description: `Welcome to **Charlie Company 337**! We are a casual gaming group that has a ton of fun together. We're very active here in Discord, have games going every night and group events throughout the month.
 
-__**There are a few things you should do to be successful in our group:**__
+__**There are a few things you need to do to gain full access to the Discord:**__
 
-     1. If you haven't already, join our group on the100. This is where we schedule our games. You can still do PUGs in Discord, but this is the core of our group. https://www.the100.io/g/3140
+     1. Join our group on the100.io. This is where we schedule our games. You can still do PUGs in Discord, but this is the core of our group. https://www.the100.io/g/3140
 
-     2. Be sure to right-click your name in Discord and select "Change Nickname". If your main game is a blizzard game use your BattlenetId. If it's a Steam game like PUBG please change your nickname to match your Steam name and format like this: "Username (Steam)"
+     2. Be sure to right click your name in Discord and select "Change Nickname." If your main game is a blizzard game use your BattlenetId. If it's a Steam game like PUBG please change your nickname to match your Steam name and format like this: "Username (Steam)." See here for more info: https://support.discordapp.com/hc/en-us/articles/219070107-Server-Nicknames
 
      3. Familiarize yourself with our ${bot.channels.find('name', 'rules_and_info')}.
 
-     4. Head over to ${bot.channels.find('name', 'introductions')} and take a moment to tell us about yourself. What games do you play? What else do you like to do? Feel free to just say hi. We're a welcoming group.
+     4. Once you've done everything above, post in ${bot.channels.find('name', 'welcome_new_members')} to get promoted to Grunt and have full acess to our Discord.
 
-     5. Check out ${bot.channels.find('name', 'use_enslaved_omnics_here')} and use the $games command to see what's on the schedule.
-
-That's it. If you have any questions, please let a member of the leadership team know.`
+That's it! If you have any questions, please let a member of the leadership team know or post in ${bot.channels.find('name', 'welcome_new_members')} for help.`
         }
     });
 
@@ -68,6 +66,26 @@ bot.on('guildMemberRemove', (guildMember) =>
     const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
 
     memberLogChannel.send(`Member Left = ${guildMember.user}`);
+})
+
+// When a member is promoted to grunt/trooper, post a message in general
+bot.on('guildMemberUpdate', (oldMember,newMember) =>
+{
+    const generalChannel = newMember.guild.channels.find('name', 'general');
+
+    // If roles have been updated
+    if(oldMember.roles.equals(newMember.roles) == false) {
+
+        // If the new role added is grunt, send message to general channel
+        if(oldMember.roles.exists('name','Grunt') == false && newMember.roles.exists('name','Grunt')) {
+            generalChannel.send(`Please welcome our newest grunt ${newMember.user}! Take a moment to introduce yourself in ${newMember.guild.channels.find('name', 'introductions')} and pick up some roles in ${newMember.guild.channels.find('name', 'role_requests')}. We're glad you joined us!`);
+        }
+
+        // If the new role added is trooper, send a message to general channel
+        else if (oldMember.roles.exists('name','Trooper') == false && newMember.roles.exists('name','Trooper')) {
+            generalChannel.send(`Congrats to ${newMember.user} on making Trooper status! Thanks for playing with us! :dorito:`);
+        }
+    }
 })
 
 // When the bot shuts down for whatever reason we post a msg in bottestchannel
