@@ -74,15 +74,15 @@ bot.on('guildMemberUpdate', (oldMember,newMember) =>
     const generalChannel = newMember.guild.channels.find('name', 'general');
 
     // If roles have been updated
-    if(oldMember.roles.equals(newMember.roles) == false) {
+    if(oldMember.roles.equals(newMember.roles) === false) {
 
         // If the new role added is grunt, send message to general channel
-        if(oldMember.roles.exists('name','Grunt') == false && newMember.roles.exists('name','Grunt')) {
+        if(oldMember.roles.exists('name','Grunt') === false && newMember.roles.exists('name','Grunt')) {
             generalChannel.send(`Please welcome our newest grunt ${newMember.user}! Take a moment to introduce yourself in ${newMember.guild.channels.find('name', 'introductions')} and pick up some roles in ${newMember.guild.channels.find('name', 'role_requests')}. We're glad you joined us!`);
         }
 
         // If the new role added is trooper, send a message to general channel
-        else if (oldMember.roles.exists('name','Trooper') == false && newMember.roles.exists('name','Trooper')) {
+        else if (oldMember.roles.exists('name','Trooper') === false && newMember.roles.exists('name','Trooper')) {
             generalChannel.send(`Congrats to ${newMember.user} on making Trooper status! Thanks for playing with us! ${newMember.guild.emojis.find('name','dorito')}`);
         }
     }
