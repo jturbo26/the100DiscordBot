@@ -83,7 +83,7 @@ bot.on('guildMemberUpdate', (oldMember,newMember) =>
 
         // If the new role added is trooper, send a message to general channel
         else if (oldMember.roles.exists('name','Trooper') == false && newMember.roles.exists('name','Trooper')) {
-            generalChannel.send(`Congrats to ${newMember.user} on making Trooper status! Thanks for playing with us! :dorito:`);
+            generalChannel.send(`Congrats to ${newMember.user} on making Trooper status! Thanks for playing with us! ${newMember.guild.emojis.find('name','dorito')}`);
         }
     }
 })
