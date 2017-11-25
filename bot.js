@@ -29,8 +29,7 @@ bot.on('ready', () =>
         
         // If member has been here more than three days and is not a Grunt yet, kick 'em out
         // and send them a message why
-        //& member.roles.exists('name','Grunt') === false)
-        if (threeDaysAfterJoinDate > todaysDate) {
+        if (threeDaysAfterJoinDate < todaysDate && member.roles.exists('name','Grunt') === false) {
             bot.users.get(member.user.id).send('',
             {
                 embed:
