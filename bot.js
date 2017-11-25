@@ -114,12 +114,12 @@ bot.on('guildMemberRemove', (guildMember) =>
     guildMember.guild.fetchAuditLogs('limit',1)
     .then((logs) => {
 
-        // If member was kicked by ModBot, send this message
+        // If member was kicked by CC337Bot, send this message
         if(logs.entries.first().action === 'MEMBER_KICK' && logs.entries.first().executor.id === '206128006698237952') {
             memberLogChannel.send(`Newbie ${guildMember.user} has been kicked! Good riddance!`);
         }
 
-        // Else if member left or was banned/kicked by someone else, send this message
+        // If member left or was banned/kicked by someone else, send this message
         else {
             memberLogChannel.send(`Member Left = ${guildMember.user}`);
         }
