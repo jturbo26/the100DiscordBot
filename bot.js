@@ -7,7 +7,6 @@ const commands = require('./bot/commands.js');
 bot.on('ready', () =>
 {
     const botTestChannel = bot.channels.find('name', 'bottestchannel');
-    const memberLogChannel = bot.channels.find('name', 'member_log');
 
     botTestChannel.send('Boo Boo Bee Doo... Omnic is ready to serve its CC337 Overlords!');
 
@@ -16,7 +15,8 @@ bot.on('ready', () =>
     bot.user.setGame('$help');
 
     // Get a list of members with Newbie role
-    bot.guilds.get('193349994617634816').roles.find('name','Newbie').members.forEach(function(member) {
+    bot.guilds.get('193349994617634816').roles.find('name','Newbie').members.forEach((member) =>
+    {
 
         // Get today's date
         const todaysDate = new Date();
@@ -50,7 +50,8 @@ __**To Gain Full Access to the CC337 Discord:**__
 Once you've completed this, post in the #welcome_new_members channel to be promoted to Grunt and receive access to the rest of the Discord.`
                 }
             })
-            .then((message) => {
+            .then(() =>
+            {
                 member.kick('Did not complete basic membership requirements after three days');
             });
         }
@@ -119,7 +120,7 @@ bot.on('guildMemberRemove', (guildMember) =>
             memberLogChannel.send(`Newbie ${guildMember.user} has been kicked! Good riddance!`);
         }
 
-        // If member left or was banned/kicked by someone else, send this message
+        // If member was banned, left, or kicked by someone else, send this message
         else {
             memberLogChannel.send(`Member Left = ${guildMember.user}`);
         }
