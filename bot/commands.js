@@ -221,20 +221,24 @@ const execute = (bot, msg, command, parameters) =>
 
         default: // Command not found
 
-            msg.channel.send('',
+            // Check to see if the user was trying to type a dollar value or utilize multiple $$$ symbols rather than issue a command
+            if ((isNaN(parseInt(command.substr(1, 1)))) && (command.substr(1,1) !== '$'))
             {
-                embed:
+                msg.channel.send('',
                 {
-                    color: 0xFF0000,
-                    fields:
-                    [
-                        {
-                            name: command + ' not found',
-                            value: '```yaml\n' + `Type $commands to display a list of available commands` + '```'
-                        }
-                    ]
-                }
-            });
+                    embed:
+                    {
+                        color: 0xFF0000,
+                        fields:
+                        [
+                            {
+                                name: command + ' not found',
+                                value: '```yaml\n' + `Type $commands to display a list of available commands` + '```'
+                            }
+                        ]
+                    }
+                });
+            }
     }
 };
 

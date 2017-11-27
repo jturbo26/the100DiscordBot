@@ -14,28 +14,32 @@ bot.on('ready', () =>
 
     bot.user.setGame('$help');
 
-    // Get a list of members with Newbie role
-    bot.guilds.get('193349994617634816').roles.find('name','Newbie').members.forEach((member) =>
+    // Tries to perform this function on the live server
+    try
     {
+        // Get a list of members with Newbie role
+        bot.guilds.get('193349994617634816').roles.find('name', 'Newbie').members.forEach((member) =>
+        {
 
-        // Get today's date
-        const todaysDate = new Date();
+            // Get today's date
+            const todaysDate = new Date();
 
-        // Find member's join date
-        const joinDate = member.joinedAt;
+            // Find member's join date
+            const joinDate = member.joinedAt;
 
-        // Add three days to member's join date
-        const threeDaysAfterJoinDate = joinDate.setDate(joinDate.getDate() + 3);
-        
-        // If member has been here more than three days and is not a Grunt yet, kick 'em out
-        // and send them a message why
-        if (threeDaysAfterJoinDate < todaysDate && member.roles.exists('name','Grunt') === false) {
-            bot.users.get(member.user.id).send('',
+            // Add three days to member's join date
+            const threeDaysAfterJoinDate = joinDate.setDate(joinDate.getDate() + 3);
+
+            // If member has been here more than three days and is not a Grunt yet, kick 'em out
+            // and send them a message why
+            if (threeDaysAfterJoinDate < todaysDate && member.roles.exists('name', 'Grunt') === false)
             {
-                embed:
-                {
-                    color: 65380,
-                    description: `Hello, you’ve been removed from the ***Charlie Company 337*** Discord for not completing basic membership requirements after three days.
+                bot.users.get(member.user.id).send('',
+                    {
+                        embed:
+                        {
+                            color: 65380,
+                            description: `Hello, you’ve been removed from the ***Charlie Company 337*** Discord for not completing basic membership requirements after three days.
 
 Feel free to rejoin and follow these instructions to access the rest of the Discord:
 
@@ -48,14 +52,19 @@ __**To Gain Full Access to the CC337 Discord:**__
      **3**) Join our group on the100: https://www.the100.io/groups/3140
 
 Once you've completed this, post in the #welcome_new_members channel to be promoted to Grunt and receive access to the rest of the Discord.`
-                }
-            })
-            .then(() =>
-            {
-                member.kick('Did not complete basic membership requirements after three days');
-            });
-        }
-    })
+                        }
+                    })
+                    .then(() =>
+                    {
+                        member.kick('Did not complete basic membership requirements after three days');
+                    });
+            }
+        })
+    }
+    catch (error)
+    {
+
+    }
 });
 
 // Handles commands
