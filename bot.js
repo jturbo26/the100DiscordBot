@@ -60,10 +60,12 @@ Once you've completed this, post in the #welcome_new_members channel to be promo
                     });
             }
         })
+
+        console.log(`Live Server`);
     }
     catch (error)
     {
-
+        console.log(`Non Live Server`);
     }
 });
 
