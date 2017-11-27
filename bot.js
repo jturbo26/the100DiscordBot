@@ -10,7 +10,7 @@ bot.on('ready', () =>
 
     botTestChannel.send('Boo Boo Bee Doo... Omnic is ready to serve its CC337 Overlords!');
 
-    console.log(`Bot Online`);
+    console.log('Bot Online');
 
     bot.user.setGame('$help');
 
@@ -61,11 +61,11 @@ Once you've completed this, post in the #welcome_new_members channel to be promo
             }
         })
 
-        console.log(`Live Server`);
+        console.log('Live Server');
     }
     catch (error)
     {
-        console.log(`Non Live Server`);
+        console.log('Non Live Server');
     }
 });
 
