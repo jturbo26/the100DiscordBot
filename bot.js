@@ -141,9 +141,11 @@ bot.on('guildMemberRemove', (guildMember) =>
 })
 
 // When a member is promoted to grunt or trooper, post a message in general
+// When a member changes their nickname do ???
 bot.on('guildMemberUpdate', (oldMember,newMember) =>
 {
     const generalChannel = newMember.guild.channels.find('name', 'general');
+    const leadershipChannel = newMember.guild.channels.find('name', 'company_leadership');
 
     // If roles have been updated
     if(oldMember.roles.equals(newMember.roles) === false) {
@@ -158,6 +160,22 @@ bot.on('guildMemberUpdate', (oldMember,newMember) =>
             generalChannel.send(`Congrats to ${newMember.user} on making Trooper status! Thanks for playing with us! ${newMember.guild.emojis.find('name','dorito')}`);
         }
     }
+
+    // If a newbie has changed their nickname
+    if(newMember.nickname && oldMember.nickname !== newMember.nickname && newMember.roles.exists('name','Newbie')) {
+        
+        // Post a message to ???
+        
+
+        if (oldMember.nickname) {
+            leadershipChannel.send(`Newbie ${oldMember.nickname} has changed their nickname to ${newMember.user}`);
+        }
+        
+        else{
+            leadershipChannel.send(`Newbie ${oldMember.displayName} has added the nickname ${newMember.user}`);
+        }
+    }
+
 })
 
 // When the bot shuts down for whatever reason we post a msg in bottestchannel
