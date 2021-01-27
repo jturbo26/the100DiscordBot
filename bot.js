@@ -141,7 +141,7 @@ bot.on('guildMemberRemove', (guildMember) =>
 })
 
 // When a member is promoted to grunt or trooper, post a message in general
-// When a member changes their nickname do ???
+// When a newbie changes their nickname send a notification to leadership
 bot.on('guildMemberUpdate', (oldMember,newMember) =>
 {
     const generalChannel = newMember.guild.channels.find('name', 'general');
