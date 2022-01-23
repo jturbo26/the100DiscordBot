@@ -1,3 +1,0 @@
-This is a test message with the current date - $[0]
-
-<https://www.the100.io>
