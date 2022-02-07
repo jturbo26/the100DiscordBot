@@ -8,3 +8,5 @@
 * Run the bot by typing the following without quotes "node bot.js"
 
 * Bot uses discord.js - You'll want to become familiar with their documentation here: https://discord.js.org/#/docs/main/stable/general/welcome
+
+* Bot invite link with permission set - https://discord.com/api/oauth2/authorize?client_id=853005559501291551&permissions=1503709097207&scope=bot

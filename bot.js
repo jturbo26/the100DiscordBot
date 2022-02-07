@@ -3,10 +3,16 @@ const request = require('request');
 const authDetails = require('./auth.json');
 const bot = new Discord.Client({ autoReconnect: true });
 const commands = require('./bot/commands.js');
+const inviteAgeDays = 7;
+const inviteMaxUses = 1;
+const inviteUnique = true;
+
 
 bot.on('ready', () =>
 {
     const botTestChannel = bot.channels.find('name', 'bottestchannel');
+    const welcomeChannel = bot.channels.find('name', 'welcome_new_members');
+    const rulesChannel = bot.channels.find('name', 'rules_and_info');
 
     botTestChannel.send('Boo Boo Bee Doo... Omnic is ready to serve its CC337 Overlords!');
 
@@ -18,7 +24,12 @@ bot.on('ready', () =>
     try
     {
         // Get a list of members with Newbie role
-        bot.guilds.get('193349994617634816').roles.find('name', 'Newbie').members.forEach((member) =>
+        
+        // Temporary server change
+        //bot.guilds.get('193349994617634816').roles.find('name', 'Newbie').members.forEach((member) =>
+
+        // Sucrizzle test server
+        bot.guilds.get('775515618254127134').roles.find('name', 'Newbie').members.forEach((member) =>
         {
 
             // Get today's date
@@ -28,39 +39,43 @@ bot.on('ready', () =>
             const joinDate = member.joinedAt;
 
             // Add three days to member's join date
-            const threeDaysAfterJoinDate = joinDate.setDate(joinDate.getDate() + 3);
+            //const threeDaysAfterJoinDate = joinDate.setDate(joinDate.getDate() + 3);
+            
+            //Temporary set to 5 minutes
+           const threeDaysAfterJoinDate = joinDate.setSeconds(joinDate.getSeconds() + 1);
 
             // If member has been here more than three days and is not a Grunt yet, kick 'em out
             // and send them a message why
             if (threeDaysAfterJoinDate < todaysDate && member.roles.exists('name', 'Grunt') === false)
             {
-                bot.users.get(member.user.id).send('',
+                // Generate a unique, single use, 7 day invite for the member and send them a DM
+                welcomeChannel.createInvite({maxAge: 604800, maxUses: 1, unique: true})
+                .then(invite => bot.users.get(member.user.id).send('',
+                {
+                    embed:
                     {
-                        embed:
-                        {
-                            color: 65380,
-                            description: `Hello, you’ve been removed from the ***Charlie Company 337*** Discord for not completing basic membership requirements after three days.
+                        color: 65380,
+                        description: `Hello, you’ve been removed from the ***Charlie Company 337*** Discord for not completing basic membership requirements after three days.
 
 Feel free to rejoin and follow these instructions to access the rest of the Discord:
 
 __**To Gain Full Access to the CC337 Discord:**__
 
-     **1**) Rejoin Discord: https://discord.gg/qSbRjag
+ **1**) Rejoin Discord: https://discord.gg/${invite.code}  This invite is single-use only and will expire after 7 days
 
-     **2**) Change your nickname on Discord to your Battlenet Tag or Steam ID. See how to here: https://support.discordapp.com/hc/en-us/articles/219070107-Server-Nicknames
+ **2**) Change your nickname on Discord to your Bungie ID, Steam ID or Battlenet Tag. See how to here: https://support.discordapp.com/hc/en-us/articles/219070107-Server-Nicknames
 
-     **3**) Join our group on the100: https://www.the100.io/groups/3140
+ **3**) Join our group on the100: https://www.the100.io/groups/3140
 
 Once you've completed this, post in the #welcome_new_members channel to be promoted to Grunt and receive access to the rest of the Discord.`
-                        }
-                    })
-                    .then(() =>
-                    {
-                        member.kick('Did not complete basic membership requirements after three days');
-                    });
-            }
-        })
-
+                    }
+                }))
+                .then(() =>
+                {
+                    member.kick('Did not complete basic membership requirements after three days');
+                });
+        }
+    })
         console.log('Live Server');
     }
     catch (error)
@@ -87,9 +102,17 @@ bot.on('guildMemberAdd', (guildMember) =>
 
 __**There are a few things you need to do to gain full access to the Discord:**__
 
-     **1**) Join our group on the100.io. This is where we schedule our games. You can still do PUGs in Discord, but this is the core of our group. https://www.the100.io/g/3140
+     **1**) Join our group on the100.io. This is where we schedule our games. You can still LFG in Discord, but this is the core of our group. https://www.the100.io/g/3140
 
-     **2**) Be sure to right click your name in Discord and select "Change Nickname." If your main game is a blizzard game use your BattlenetId. If it's a Steam game like PUBG please change your nickname to match your Steam name and format like this: "Username (Steam)." See here for more info: https://support.discordapp.com/hc/en-us/articles/219070107-Server-Nicknames
+     **2**) Be sure to set your nickname to let people know how to find you on your main platform (e.g. "Username#1234 (Bungie)" or "Username (Steam)").  
+     
+     To do this:
+     - right click your name in Discord
+     - select "Edit Server Profile"
+     - change your nickname in the text box 
+     - click "Save Changes" at the bottom of the screen.  
+
+     See here for more info: https://support.discordapp.com/hc/en-us/articles/219070107-Server-Nicknames
 
      **3**) Familiarize yourself with our ${bot.channels.find('name', 'rules_and_info')}.
 
@@ -102,14 +125,12 @@ That's it! If you have any questions, please let a member of the leadership team
     // Add Newbie role to new member upon joining
     guildMember.addRole(guildMember.guild.roles.find('name', 'Newbie'));
 
-    const newMemberChannel = guildMember.guild.channels.find('name', 'welcome_new_members');
-
     const leadershipChannel = guildMember.guild.channels.find('name', 'company_leadership');
-
+    const welcomeChannel = bot.channels.find('name', 'welcome_new_members');
     const memberLogChannel = guildMember.guild.channels.find('name', 'member_log');
 
     // Post a message in welcome_new_members/company_leadership/member_log notifying users of new member.
-    newMemberChannel.send(`Hey everyone! We have a new member. Please welcome ${guildMember.user} to our group! ${guildMember.user}, please read the post at the top of this channel for more information on how to get promoted to Grunt and be given access to the rest of the Discord. Happy gaming!`);
+    welcomeChannel.send(`Hey everyone! We have a new member. Please welcome ${guildMember.user} to our group! ${guildMember.user}, please read the post at the top of this channel for more information on how to get promoted to Grunt and be given access to the rest of the Discord. Happy gaming!`);
 
     leadershipChannel.send(`Hey leadership team! We have a new member. Please be sure to welcome them and encourage them to participate! New Member = ${guildMember.user}`);
 
@@ -142,10 +163,12 @@ bot.on('guildMemberRemove', (guildMember) =>
 
 // When a member is promoted to grunt or trooper, post a message in general
 // When a newbie changes their nickname send a notification to leadership
+// When any member changes their nickname, add it to the mod log
 bot.on('guildMemberUpdate', (oldMember,newMember) =>
 {
     const generalChannel = newMember.guild.channels.find('name', 'general');
     const leadershipChannel = newMember.guild.channels.find('name', 'company_leadership');
+    const memberLogChannel = newMember.guild.channels.find('name', 'member_log')
 
     // If roles have been updated
     if(oldMember.roles.equals(newMember.roles) === false) {
@@ -162,17 +185,26 @@ bot.on('guildMemberUpdate', (oldMember,newMember) =>
     }
 
     // If a newbie has changed their nickname
-    if(newMember.nickname && oldMember.nickname !== newMember.nickname && newMember.roles.exists('name','Newbie')) {
+    if(newMember.nickname && oldMember.nickname !== newMember.nickname) {
         
-        // Post a message to ???
-        
-
+        // Post a message to member_log
         if (oldMember.nickname) {
-            leadershipChannel.send(`Newbie ${oldMember.nickname} has changed their nickname to ${newMember.user}`);
+            memberLogChannel.send(`${oldMember.nickname} has changed their nickname to ${newMember.user}`);
         }
         
         else{
-            leadershipChannel.send(`Newbie ${oldMember.displayName} has added the nickname ${newMember.user}`);
+            memberLogChannel.send(`${oldMember.displayName} has added the nickname ${newMember.user}`);
+        }
+        
+        if(newMember.roles.exists('name','Newbie'))
+        {
+            if (oldMember.nickname) {
+                leadershipChannel.send(`Newbie ${oldMember.nickname} has changed their nickname to ${newMember.user}`);
+            }
+            
+            else{
+                leadershipChannel.send(`Newbie ${oldMember.displayName} has added the nickname ${newMember.user}`);
+            }
         }
     }
 
