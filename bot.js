@@ -25,11 +25,8 @@ bot.on('ready', () =>
     {
         // Get a list of members with Newbie role
         
-        // Temporary server change
-        //bot.guilds.get('193349994617634816').roles.find('name', 'Newbie').members.forEach((member) =>
-
-        // Sucrizzle test server
-        bot.guilds.get('775515618254127134').roles.find('name', 'Newbie').members.forEach((member) =>
+        // CC337 Server
+        bot.guilds.get('193349994617634816').roles.find('name', 'Newbie').members.forEach((member) =>
         {
 
             // Get today's date
@@ -39,10 +36,7 @@ bot.on('ready', () =>
             const joinDate = member.joinedAt;
 
             // Add three days to member's join date
-            //const threeDaysAfterJoinDate = joinDate.setDate(joinDate.getDate() + 3);
-            
-            //Temporary set to 5 minutes
-           const threeDaysAfterJoinDate = joinDate.setSeconds(joinDate.getSeconds() + 1);
+            const threeDaysAfterJoinDate = joinDate.setDate(joinDate.getDate() + 3);
 
             // If member has been here more than three days and is not a Grunt yet, kick 'em out
             // and send them a message why
