@@ -162,7 +162,8 @@ bot.on('guildMemberUpdate', (oldMember,newMember) =>
 {
     const generalChannel = newMember.guild.channels.find('name', 'general');
     const leadershipChannel = newMember.guild.channels.find('name', 'company_leadership');
-    const memberLogChannel = newMember.guild.channels.find('name', 'member_log')
+    const memberLogChannel = newMember.guild.channels.find('name', 'member_log');
+    const welcomeChannel = bot.channels.find('name', 'welcome_new_members');
 
     // If roles have been updated
     if(oldMember.roles.equals(newMember.roles) === false) {
@@ -193,11 +194,11 @@ bot.on('guildMemberUpdate', (oldMember,newMember) =>
         if(newMember.roles.exists('name','Newbie'))
         {
             if (oldMember.nickname) {
-                leadershipChannel.send(`Newbie ${oldMember.nickname} has changed their nickname to ${newMember.user}`);
+                welcomeChannel.send(`Newbie ${oldMember.nickname} has changed their nickname to ${newMember.user}`);
             }
             
             else{
-                leadershipChannel.send(`Newbie ${oldMember.displayName} has added the nickname ${newMember.user}`);
+                welcomeChannel.send(`Newbie ${oldMember.displayName} has added the nickname ${newMember.user}`);
             }
         }
     }
